@@ -5,8 +5,6 @@ import team.bue.bugle.buildsrc.Versions
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ktlint)
 }
@@ -37,9 +35,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(libs.lifecycle.viewmodel.compose)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
             api(libs.kermit)
@@ -63,4 +59,3 @@ android {
         targetCompatibility = Versions.java
     }
 }
-

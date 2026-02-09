@@ -1,5 +1,5 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import team.bue.bugle.buildsrc.ProjectProperties
 import team.bue.bugle.buildsrc.Versions
 
 plugins {
@@ -17,7 +17,7 @@ plugins {
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -59,14 +59,14 @@ kotlin {
 
 android {
     namespace = "team.bue.bugle"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk = ProjectProperties.COMPILE_SDK
 
     defaultConfig {
         applicationId = "team.bue.bugle"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = ProjectProperties.MIN_SDK
+        targetSdk = ProjectProperties.TARGET_SDK
+        versionCode = ProjectProperties.VERSION_CODE
+        versionName = ProjectProperties.VERSION_NAME
     }
     packaging {
         resources {
