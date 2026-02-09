@@ -42,7 +42,6 @@ kotlin {
             implementation(compose.foundation)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
-            implementation(libs.navigation.compose)
             api(libs.kermit)
         }
         commonTest.dependencies {
