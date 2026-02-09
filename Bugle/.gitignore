@@ -23,3 +23,6 @@ node_modules/
 .claude
 .gemini
 .agents
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
