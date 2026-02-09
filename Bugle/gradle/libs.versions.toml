@@ -13,7 +13,7 @@ androidx-lifecycle = "2.8.2"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
 coil = "3.1.0"
-compose-plugin = "1.9.3"
+compose-plugin = "1.10.0"
 composeMaterial = "1.6.0"
 composeCalendar = "2.9.0"
 compottie = "2.0.2"
@@ -32,7 +32,7 @@ kotlinxSerializationJson = "1.7.3"
 kotlinxCollectionsImmutable = "0.3.7"
 ktor = "3.0.1"
 lifecycleViewmodelCompose = "2.9.5"
-navigationCompose = "2.9.1"
+navigation3 = "1.0.0-alpha06"
 jetbrainsKotlinJvm = "2.0.20"
 sqldelight = "2.0.2"
 ktlint = "12.1.1"
@@ -89,7 +89,7 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
 sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko-permissions" }
 moko-permissions-compose = { module = "dev.icerock.moko:permissions-compose", version.ref = "moko-permissions" }
