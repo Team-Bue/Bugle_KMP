@@ -35,8 +35,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.androidx.datastore.preferences.core)
             api(libs.kermit)
 
             implementation(projects.core.model)
