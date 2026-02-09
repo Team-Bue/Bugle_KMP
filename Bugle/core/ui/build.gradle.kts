@@ -40,11 +40,10 @@ kotlin {
             implementation(libs.lifecycle.viewmodel.compose)
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.kotlinx.serialization.json)
             api(libs.kermit)
 
             implementation(projects.core.model)
+            implementation(projects.core.designSystem)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

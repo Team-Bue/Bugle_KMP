@@ -29,7 +29,6 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
-include(":core")
 include(":core:common")
 include(":core:data")
 include(":core:datastore")
@@ -38,4 +37,3 @@ include(":core:domain")
 include(":core:model")
 include(":core:network")
 include(":core:ui")
-include(":feature")
