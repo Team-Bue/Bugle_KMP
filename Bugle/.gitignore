@@ -17,3 +17,12 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+
+.idea/*
+
+.claude
+.gemini
+.agents
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
