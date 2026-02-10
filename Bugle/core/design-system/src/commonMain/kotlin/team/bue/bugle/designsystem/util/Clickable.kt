@@ -1,4 +1,4 @@
-package team.retum.jobisdesignsystemv2.utils
+package team.bue.bugle.designsystem.util
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Indication

@@ -1,4 +1,4 @@
-package team.retum.jobisdesignsystemv2.utils
+package team.bue.bugle.designsystem.util
 
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
