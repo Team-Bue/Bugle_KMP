@@ -51,7 +51,7 @@ fun BugleTextField(
 ) {
     val borderColor = if (isError) BugleColor.Light.error500 else BugleColor.Light.primary500
     var visible by remember { mutableStateOf(false) }
-    val (visualTransformation, icon) = if (visible || !showVisibleIcon) {
+    val (effectVisualTransformation, icon) = if (visible || !showVisibleIcon) {
         VisualTransformation.None to Res.drawable.ic_eye
     } else {
         PasswordVisualTransformation() to Res.drawable.ic_eye_off
@@ -70,7 +70,7 @@ fun BugleTextField(
             onValueChange = onValueChange,
             textStyle = BugleTypography.sLabelL.copy(color = Color.White),
             singleLine = singleLine,
-            visualTransformation = visualTransformation,
+            visualTransformation = effectVisualTransformation,
             cursorBrush = SolidColor(BugleColor.Light.primary500),
             decorationBox = { innerTextField ->
                 Row(
