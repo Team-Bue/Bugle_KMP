@@ -1,0 +1,40 @@
+package team.bue.bugle.designsystem.button
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
+import team.bue.bugle.designsystem.foundation.BugleTheme
+
+@Composable
+fun BugleIconButton(
+    modifier: Modifier = Modifier,
+    resource: DrawableResource,
+    tint: Color = BugleTheme.colors.onBackground,
+    enabled: Boolean = true,
+    size: Dp = 26.dp,
+    contentPaddingValues: PaddingValues = PaddingValues(2.dp),
+    contentDescription: String? = null,
+    onClick: () -> Unit,
+) {
+    IconButton(
+        modifier = modifier.size(size),
+        enabled = enabled,
+        onClick = onClick,
+    ) {
+        Icon(
+            modifier = Modifier.padding(contentPaddingValues),
+            painter = painterResource(resource),
+            tint = tint,
+            contentDescription = contentDescription,
+        )
+    }
+}
