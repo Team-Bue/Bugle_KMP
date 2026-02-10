@@ -39,9 +39,12 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.components.resources)
             api(libs.kermit)
 
             implementation(projects.core.model)
+            implementation(libs.ui.tooling.preview)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
