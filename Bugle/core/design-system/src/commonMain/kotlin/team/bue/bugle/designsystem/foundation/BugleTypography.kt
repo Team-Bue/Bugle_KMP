@@ -15,7 +15,7 @@ import org.jetbrains.compose.resources.Font
 private fun pretendardFamily() = FontFamily(
     Font(
         resource = Res.font.pretendard_regular,
-        weight = FontWeight.Light,
+        weight = FontWeight.Normal,
     ),
     Font(
         resource = Res.font.pretendard_medium,
