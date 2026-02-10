@@ -44,7 +44,6 @@ kotlin {
             api(libs.kermit)
 
             implementation(projects.core.model)
-            implementation(libs.ui.tooling.preview)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

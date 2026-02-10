@@ -21,7 +21,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import team.bue.bugle.designsystem.foundation.BugleColor
 import team.bue.bugle.designsystem.foundation.BugleTheme
@@ -76,17 +75,6 @@ fun BugleButton(
                 color = Color.White,
                 textAlign = TextAlign.Center,
             ),
-        )
-    }
-}
-
-@Preview
-@Composable
-fun BuglePreview() {
-    BugleTheme {
-        BugleButton(
-            text = "",
-            onClick = {}
         )
     }
 }
