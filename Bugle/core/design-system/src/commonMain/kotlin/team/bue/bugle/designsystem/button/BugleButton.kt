@@ -41,12 +41,11 @@ fun BugleButton(
     val isHovered by interactionSource.collectIsHoveredAsState()
 
     val backgroundColor = when {
-        !enabled -> BugleColor.Light.primary200
-        isPressed -> BugleColor.Light.primary700
-        isHovered -> BugleColor.Light.primary600
-        else -> BugleColor.Light.primary500
+        !enabled -> BugleColor.primary200
+        isPressed -> BugleColor.primary700
+        isHovered -> BugleColor.primary600
+        else -> BugleColor.primary500
     }
-
     Box(
         modifier = modifier
             .dropShadow(
@@ -72,7 +71,7 @@ fun BugleButton(
         BasicText(
             text = text,
             style = BugleTypography.sLabelL.copy(
-                color = Color.White,
+                color = BugleTheme.colors.onPrimary,
                 textAlign = TextAlign.Center,
             ),
         )

@@ -31,7 +31,7 @@ import bugle.core.design_system.generated.resources.ic_eye
 import bugle.core.design_system.generated.resources.ic_eye_off
 import org.jetbrains.compose.resources.painterResource
 import team.bue.bugle.designsystem.button.BugleIconButton
-import team.bue.bugle.designsystem.foundation.BugleColor
+import team.bue.bugle.designsystem.foundation.BugleTheme
 import team.bue.bugle.designsystem.foundation.BugleTypography
 
 @Composable
@@ -49,7 +49,7 @@ fun BugleTextField(
     showClearIcon: Boolean = false,
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {
-    val borderColor = if (isError) BugleColor.Light.error500 else BugleColor.Light.primary500
+    val borderColor = if (isError) BugleTheme.colors.error else BugleTheme.colors.primary
     var visible by remember { mutableStateOf(false) }
     val (effectVisualTransformation, icon) = if (visible || !showVisibleIcon) {
         VisualTransformation.None to Res.drawable.ic_eye
@@ -61,17 +61,17 @@ fun BugleTextField(
         if (label.isNotEmpty()) {
             BasicText(
                 text = label,
-                style = BugleTypography.textL.copy(color = Color.White),
+                style = BugleTypography.textL.copy(color = BugleTheme.colors.onPrimary),
             )
         }
 
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            textStyle = BugleTypography.sLabelL.copy(color = Color.White),
+            textStyle = BugleTypography.sLabelL.copy(color = BugleTheme.colors.onPrimary),
             singleLine = singleLine,
             visualTransformation = effectVisualTransformation,
-            cursorBrush = SolidColor(BugleColor.Light.primary500),
+            cursorBrush = SolidColor(BugleTheme.colors.primary),
             decorationBox = { innerTextField ->
                 Row(
                     modifier = Modifier
@@ -85,8 +85,8 @@ fun BugleTextField(
                         if (value.isEmpty() && placeholder.isNotEmpty()) {
                             BasicText(
                                 text = placeholder,
-                                style = BugleTypography.sLabelL.copy(
-                                    color = BugleColor.Light.gray700,
+                                style = BugleTypography.sLabelM.copy(
+                                    color = BugleTheme.colors.onSurfaceVariant,
                                 ),
                             )
                         }
@@ -102,7 +102,7 @@ fun BugleTextField(
                                 resource = icon,
                                 onClick = { visible = !visible },
                                 size = 24.dp,
-                                tint = BugleColor.Light.gray500,
+                                tint = BugleTheme.colors.onSurfaceVariant,
                             )
                         }
                         if (showClearIcon && value.isNotEmpty()) {
@@ -110,7 +110,7 @@ fun BugleTextField(
                                 resource = Res.drawable.ic_cancel,
                                 onClick = { onValueChange("") },
                                 size = 24.dp,
-                                tint = BugleColor.Light.gray500,
+                                tint = BugleTheme.colors.onSurfaceVariant,
                             )
                         }
                         if (trailingIcon != null) {
@@ -131,12 +131,12 @@ fun BugleTextField(
                 Icon(
                     painter = painterResource(Res.drawable.ic_error),
                     contentDescription = null,
-                    tint = BugleColor.Light.error500,
+                    tint = BugleTheme.colors.error,
                 )
                 BasicText(
                     text = errorMessage,
                     style = BugleTypography.textM.copy(
-                        color = BugleColor.Light.error500,
+                        color = BugleTheme.colors.error,
                     ),
                 )
             }

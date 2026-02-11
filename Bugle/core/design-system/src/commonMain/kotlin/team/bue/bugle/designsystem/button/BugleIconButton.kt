@@ -12,13 +12,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
-import team.bue.bugle.designsystem.foundation.BugleTheme
+import team.bue.bugle.designsystem.foundation.BugleColor
 
 @Composable
 fun BugleIconButton(
     modifier: Modifier = Modifier,
     resource: DrawableResource,
-    tint: Color = BugleTheme.colors.onBackground,
+    tint: Color = BugleColor.black,
     enabled: Boolean = true,
     size: Dp = 26.dp,
     contentPaddingValues: PaddingValues = PaddingValues(2.dp),

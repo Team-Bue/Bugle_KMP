@@ -12,10 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import team.bue.bugle.designsystem.foundation.BugleColor
+import team.bue.bugle.designsystem.foundation.BugleTheme
 import team.bue.bugle.designsystem.foundation.BugleTypography
 import team.bue.bugle.designsystem.util.clickable
 
@@ -29,9 +28,9 @@ fun BugleSocialButton(
     enabled: Boolean = true,
     icon: @Composable () -> Unit,
 ) {
-    val backgroundColor = if (enabled) BugleColor.Light.black else BugleColor.Light.gray900
-    val textColor = if (enabled) Color.White else BugleColor.Light.gray500
-    val borderColor = BugleColor.Light.gray700
+    val backgroundColor = if (enabled) BugleTheme.colors.onBackground else BugleTheme.colors.scrim
+    val textColor = if (enabled) BugleTheme.colors.inverseOnSurface else BugleTheme.colors.onSurfaceVariant
+    val borderColor = BugleTheme.colors.outline
 
     Box(
         modifier = modifier
