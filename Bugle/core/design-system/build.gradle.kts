@@ -51,6 +51,10 @@ kotlin {
     }
 }
 
+compose.resources {
+    publicResClass = true
+}
+
 android {
     namespace = "team.bue.bugle.core.designsystem"
     compileSdk = ProjectProperties.COMPILE_SDK
