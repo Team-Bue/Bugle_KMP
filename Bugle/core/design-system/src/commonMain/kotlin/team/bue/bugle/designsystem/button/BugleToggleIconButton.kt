@@ -4,8 +4,8 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,11 +22,11 @@ import team.bue.bugle.designsystem.util.clickable
 
 @Composable
 fun BugleToggleIconButton(
-    modifier: Modifier = Modifier,
     isSelected: Boolean,
     onToggle: () -> Unit,
     selectedIcon: DrawableResource,
     unselectedIcon: DrawableResource,
+    modifier: Modifier = Modifier,
     selectedTint: Color = Color.Unspecified,
     unselectedTint: Color = Color.Unspecified,
     size: Dp = 20.dp,
@@ -43,7 +43,7 @@ fun BugleToggleIconButton(
 
     Box(
         modifier = modifier
-            .size(size)
+            .sizeIn(minWidth = 48.dp, minHeight = 48.dp)
             .clickable(
                 indication = null,
                 onClick = onToggle,
@@ -52,7 +52,7 @@ fun BugleToggleIconButton(
     ) {
         Icon(
             modifier = Modifier
-                .fillMaxSize()
+                .size(size)
                 .scale(unselectedScale)
                 .alpha(unselectedScale),
             painter = painterResource(unselectedIcon),
@@ -61,7 +61,7 @@ fun BugleToggleIconButton(
         )
         Icon(
             modifier = Modifier
-                .fillMaxSize()
+                .size(size)
                 .scale(selectedScale)
                 .alpha(selectedScale),
             painter = painterResource(selectedIcon),
