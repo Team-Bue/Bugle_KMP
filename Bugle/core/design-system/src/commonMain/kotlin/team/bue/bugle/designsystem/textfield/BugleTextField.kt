@@ -24,13 +24,9 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import bugle.core.design_system.generated.resources.Res
-import bugle.core.design_system.generated.resources.ic_cancel
-import bugle.core.design_system.generated.resources.ic_error
-import bugle.core.design_system.generated.resources.ic_eye
-import bugle.core.design_system.generated.resources.ic_eye_off
 import org.jetbrains.compose.resources.painterResource
 import team.bue.bugle.designsystem.button.BugleIconButton
+import team.bue.bugle.designsystem.foundation.BugleIcon
 import team.bue.bugle.designsystem.foundation.BugleTheme
 import team.bue.bugle.designsystem.foundation.BugleTypography
 
@@ -52,9 +48,9 @@ fun BugleTextField(
     val borderColor = if (isError) BugleTheme.colors.error else BugleTheme.colors.primary
     var visible by remember { mutableStateOf(false) }
     val (effectVisualTransformation, icon) = if (visible || !showVisibleIcon) {
-        VisualTransformation.None to Res.drawable.ic_eye
+        VisualTransformation.None to BugleIcon.Eye
     } else {
-        PasswordVisualTransformation() to Res.drawable.ic_eye_off
+        PasswordVisualTransformation() to BugleIcon.EyeOff
     }
 
     Column(modifier = modifier) {
@@ -107,7 +103,7 @@ fun BugleTextField(
                         }
                         if (showClearIcon && value.isNotEmpty()) {
                             BugleIconButton(
-                                resource = Res.drawable.ic_cancel,
+                                resource = BugleIcon.Cancel,
                                 onClick = { onValueChange("") },
                                 size = 24.dp,
                                 tint = BugleTheme.colors.onSurfaceVariant,
@@ -129,7 +125,7 @@ fun BugleTextField(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Icon(
-                    painter = painterResource(Res.drawable.ic_error),
+                    painter = painterResource(BugleIcon.Error),
                     contentDescription = null,
                     tint = BugleTheme.colors.error,
                 )
