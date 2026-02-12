@@ -22,8 +22,9 @@ kotlin {
     }
 
     listOf(
+        iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
@@ -57,6 +58,7 @@ kotlin {
             implementation(libs.koin.core)
 
             implementation(projects.core.designSystem)
+            implementation(projects.feature.splash)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
