@@ -20,6 +20,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import team.bue.bugle.designsystem.foundation.BugleColor
 import team.bue.bugle.designsystem.foundation.BugleTheme
 import team.bue.bugle.designsystem.foundation.BugleTypography
 import team.bue.bugle.designsystem.util.clickable
@@ -34,9 +35,9 @@ fun BugleSocialButton(
     enabled: Boolean = true,
     icon: @Composable () -> Unit,
 ) {
-    val backgroundColor = if (enabled) BugleTheme.colors.onBackground else BugleTheme.colors.scrim
+    val backgroundColor = if (enabled) BugleTheme.colors.onBackground else BugleColor.gray900
     val textColor = if (enabled) BugleTheme.colors.inverseOnSurface else BugleTheme.colors.onSurfaceVariant
-    val borderColor = BugleTheme.colors.outline
+    val borderColor = BugleTheme.tokens.pressed
 
     Row(
         modifier = modifier
