@@ -16,15 +16,17 @@ import team.bue.bugle.designsystem.foundation.BugleTheme
 
 @Composable
 fun BugleIconButton(
-    modifier: Modifier = Modifier,
     resource: DrawableResource,
-    tint: Color = BugleTheme.colors.onBackground,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    tint: Color = Color.Unspecified,
     enabled: Boolean = true,
     size: Dp = 26.dp,
     contentPaddingValues: PaddingValues = PaddingValues(2.dp),
     contentDescription: String? = null,
-    onClick: () -> Unit,
 ) {
+    val effectiveTint = if (tint == Color.Unspecified) BugleTheme.colors.onBackground else tint
+
     IconButton(
         modifier = modifier.size(size),
         enabled = enabled,
@@ -33,7 +35,7 @@ fun BugleIconButton(
         Icon(
             modifier = Modifier.padding(contentPaddingValues),
             painter = painterResource(resource),
-            tint = tint,
+            tint = effectiveTint,
             contentDescription = contentDescription,
         )
     }

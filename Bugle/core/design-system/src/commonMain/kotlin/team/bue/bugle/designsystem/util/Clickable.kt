@@ -25,6 +25,7 @@ internal const val DEFAULT_DISABLED_MILLIS = 300L
 
 @Composable
 fun Modifier.clickable(
+    interactionSource: MutableInteractionSource? = null,
     enabled: Boolean = true,
     pressDepth: Float = DEFAULT_PRESS_DEPTH,
     indication: Indication? = ripple(),
@@ -33,8 +34,8 @@ fun Modifier.clickable(
     onClick: () -> Unit,
     disabledMillis: Long = DEFAULT_DISABLED_MILLIS,
 ): Modifier {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isPressed by interactionSource.collectIsPressedAsState()
+    val effectiveInteractionSource = interactionSource ?: remember { MutableInteractionSource() }
+    val isPressed by effectiveInteractionSource.collectIsPressedAsState()
     var isClickable by remember { mutableStateOf(true) }
     val scale by animateFloatAsState(
         targetValue = if (isPressed) {
@@ -53,7 +54,7 @@ fun Modifier.clickable(
         .clickable(
             enabled = enabled && isClickable,
             indication = indication,
-            interactionSource = interactionSource,
+            interactionSource = effectiveInteractionSource,
         ) {
             if (isSingleClick) {
                 isClickable = false
@@ -71,4 +72,3 @@ fun Modifier.clickable(
             scaleY = scale,
         )
 }
-

@@ -2,182 +2,47 @@ package team.bue.bugle.designsystem.foundation
 
 import androidx.compose.ui.graphics.Color
 
-sealed class BugleColor(
-    val black: Color,
-    val white: Color,
-    val gray50: Color,
-    val gray100: Color,
-    val gray200: Color,
-    val gray300: Color,
-    val gray400: Color,
-    val gray500: Color,
-    val gray600: Color,
-    val gray700: Color,
-    val gray800: Color,
-    val gray900: Color,
-    val primary50: Color,
-    val primary100: Color,
-    val primary200: Color,
-    val primary300: Color,
-    val primary400: Color,
-    val primary500: Color,
-    val primary600: Color,
-    val primary700: Color,
-    val primary800: Color,
-    val primary900: Color,
-    val success50: Color,
-    val success100: Color,
-    val success200: Color,
-    val success300: Color,
-    val success400: Color,
-    val success500: Color,
-    val success600: Color,
-    val success700: Color,
-    val success800: Color,
-    val success900: Color,
-    val warning50: Color,
-    val warning100: Color,
-    val warning200: Color,
-    val warning300: Color,
-    val warning400: Color,
-    val warning500: Color,
-    val warning600: Color,
-    val warning700: Color,
-    val warning800: Color,
-    val warning900: Color,
-    val error50: Color,
-    val error100: Color,
-    val error200: Color,
-    val error300: Color,
-    val error400: Color,
-    val error500: Color,
-    val error600: Color,
-    val error700: Color,
-    val error800: Color,
-    val error900: Color,
-    val background: Color,
-    val button: Color,
-    val container: Color,
-    val hover: Color,
-    val pressed: Color,
-) {
-    data object Light : BugleColor(
-        black = Color(0xFF000000),
-        white = Color(0xFFFFFFFF),
-        gray50 = Color(0xFFFAFAFA),
-        gray100 = Color(0xFFF5F5F5),
-        gray200 = Color(0xFFE5E5E5),
-        gray300 = Color(0xFFD4D4D4),
-        gray400 = Color(0xFFA3A3A3),
-        gray500 = Color(0xFF737373),
-        gray600 = Color(0xFF525252),
-        gray700 = Color(0xFF404040),
-        gray800 = Color(0xFF262626),
-        gray900 = Color(0xFF121212),
-        primary50 = Color(0xFFFFEDF8),
-        primary100 = Color(0xFFFFDCF0),
-        primary200 = Color(0xFFFFB9E2),
-        primary300 = Color(0xFFFF95D3),
-        primary400 = Color(0xFFFF72C5),
-        primary500 = Color(0xFFFF4FB6),
-        primary600 = Color(0xFFCC3F92),
-        primary700 = Color(0xFFA33275),
-        primary800 = Color(0xFF82285E),
-        primary900 = Color(0xFF68204B),
-        success50 = Color(0xFFBAEED1),
-        success100 = Color(0xFFA9EAC5),
-        success200 = Color(0xFF94E5B6),
-        success300 = Color(0xFF79DEA4),
-        success400 = Color(0xFF58D68D),
-        success500 = Color(0xFF2ECC71),
-        success600 = Color(0xFF25A35A),
-        success700 = Color(0xFF1E8248),
-        success800 = Color(0xFF18683A),
-        success900 = Color(0xFF13532E),
-        warning50 = Color(0xFFFAECB1),
-        warning100 = Color(0xFFF9E79D),
-        warning200 = Color(0xFFF8E184),
-        warning300 = Color(0xFFF6D965),
-        warning400 = Color(0xFFF4D03F),
-        warning500 = Color(0xFFF1C40F),
-        warning600 = Color(0xFFC19D0C),
-        warning700 = Color(0xFF9A7E0A),
-        warning800 = Color(0xFF7B6508),
-        warning900 = Color(0xFF625106),
-        error50 = Color(0xFFF5BAB9),
-        error100 = Color(0xFFF2A9A8),
-        error200 = Color(0xFFEF9492),
-        error300 = Color(0xFFEB7977),
-        error400 = Color(0xFFE65855),
-        error500 = Color(0xFFE02E2A),
-        error600 = Color(0xFFB32522),
-        error700 = Color(0xFF8F1E1B),
-        error800 = Color(0xFF721816),
-        error900 = Color(0xFF5B1312),
-        background = Color(0xFFF2F4F6),
-        button = Color(0xFFB0B6C1),
-        container = Color(0xFFFFFFFF),
-        hover = Color(0xFF8D929A),
-        pressed = Color(0xFF71757B),
-    )
+object BugleColor {
+    val black = Color(0xFF000000)
+    val white = Color(0xFFFFFFFF)
+    val gray50 = Color(0xFFFAFAFA)
+    val gray100 = Color(0xFFF5F5F5)
+    val gray200 = Color(0xFFE5E5E5)
+    val gray300 = Color(0xFFD4D4D4)
+    val gray400 = Color(0xFFA3A3A3)
+    val gray500 = Color(0xFF737373)
+    val gray600 = Color(0xFF525252)
+    val gray700 = Color(0xFF404040)
+    val gray800 = Color(0xFF262626)
+    val gray900 = Color(0xFF121212)
+    val primary50 = Color(0xFFFFEDF8)
+    val primary100 = Color(0xFFFFDCF0)
+    val primary200 = Color(0xFFFFB9E2)
+    val primary300 = Color(0xFFFF95D3)
+    val primary400 = Color(0xFFFF72C5)
+    val primary500 = Color(0xFFFF4FB6)
+    val primary600 = Color(0xFFCC3F92)
+    val primary700 = Color(0xFFA33275)
+    val primary800 = Color(0xFF82285E)
+    val primary900 = Color(0xFF68204B)
 
-    data object Dark : BugleColor(
-        black = Color(0xFFFFFFFF),
-        white = Color(0xFF121212),
-        gray50 = Color(0xFF101010),
-        gray100 = Color(0xFF121212),
-        gray200 = Color(0xFF202020),
-        gray300 = Color(0xFF343434),
-        gray400 = Color(0xFF555555),
-        gray500 = Color(0xFF999999),
-        gray600 = Color(0xFFDDDDDD),
-        gray700 = Color(0xFFEEEEEE),
-        gray800 = Color(0xFFF9F9F9),
-        gray900 = Color(0xFFFFFFFF),
-        primary50 = Color(0xFFFFEDF8),
-        primary100 = Color(0xFFFFDCF0),
-        primary200 = Color(0xFFFFB9E2),
-        primary300 = Color(0xFFFF95D3),
-        primary400 = Color(0xFFFF72C5),
-        primary500 = Color(0xFFFF4FB6),
-        primary600 = Color(0xFFCC3F92),
-        primary700 = Color(0xFFA33275),
-        primary800 = Color(0xFF82285E),
-        primary900 = Color(0xFF68204B),
-        success50 = Color(0xFFBAEED1),
-        success100 = Color(0xFFA9EAC5),
-        success200 = Color(0xFF94E5B6),
-        success300 = Color(0xFF79DEA4),
-        success400 = Color(0xFF58D68D),
-        success500 = Color(0xFF2ECC71),
-        success600 = Color(0xFF25A35A),
-        success700 = Color(0xFF1E8248),
-        success800 = Color(0xFF18683A),
-        success900 = Color(0xFF13532E),
-        warning50 = Color(0xFFFAECB1),
-        warning100 = Color(0xFFF9E79D),
-        warning200 = Color(0xFFF8E184),
-        warning300 = Color(0xFFF6D965),
-        warning400 = Color(0xFFF4D03F),
-        warning500 = Color(0xFFF1C40F),
-        warning600 = Color(0xFFC19D0C),
-        warning700 = Color(0xFF9A7E0A),
-        warning800 = Color(0xFF7B6508),
-        warning900 = Color(0xFF625106),
-        error50 = Color(0xFFF5BAB9),
-        error100 = Color(0xFFF2A9A8),
-        error200 = Color(0xFFEF9492),
-        error300 = Color(0xFFEB7977),
-        error400 = Color(0xFFE65855),
-        error500 = Color(0xFFE02E2A),
-        error600 = Color(0xFFB32522),
-        error700 = Color(0xFF8F1E1B),
-        error800 = Color(0xFF721816),
-        error900 = Color(0xFF5B1312),
-        background = Color(0xFF101010),
-        button = Color(0xFF4D5259),
-        container = Color(0xFF171717),
-        hover = Color(0xFF3E4247),
-        pressed = Color(0xFF323539),
-    )
+    val warning100 = Color(0xFFF9E79D)
+
+    val warning500 = Color(0xFFF1C40F) 
+
+    val warning700 = Color(0xFF9A7E0A)
+    val error50 = Color(0xFFF5BAB9)
+    val error100 = Color(0xFFF2A9A8)
+    val error200 = Color(0xFFEF9492)
+    val error300 = Color(0xFFEB7977)
+    val error400 = Color(0xFFE65855)
+    val error500 = Color(0xFFE02E2A)
+    val error600 = Color(0xFFB32522)
+    val error700 = Color(0xFF8F1E1B)
+    val error800 = Color(0xFF721816)
+    val error900 = Color(0xFF5B1312)
+    val background = Color(0xFFF2F4F6)
+    val button = Color(0xFFB0B6C1)
+    val hover = Color(0xFF8D929A)
+    val pressed = Color(0xFF71757B)
 }

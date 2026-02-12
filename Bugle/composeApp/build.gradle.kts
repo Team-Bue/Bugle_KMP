@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.firebase.crashlytics)
             implementation(libs.firebase.performance)
             implementation(libs.firebase.messaging)
+            implementation(libs.androidx.material)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

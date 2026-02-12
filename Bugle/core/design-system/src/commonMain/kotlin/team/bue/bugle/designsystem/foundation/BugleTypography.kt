@@ -1,6 +1,7 @@
 package team.bue.bugle.designsystem.foundation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -12,20 +13,14 @@ import bugle.core.design_system.generated.resources.pretendard_regular
 import org.jetbrains.compose.resources.Font
 
 @Composable
-private fun pretendardFamily() = FontFamily(
-    Font(
-        resource = Res.font.pretendard_regular,
-        weight = FontWeight.Normal,
-    ),
-    Font(
-        resource = Res.font.pretendard_medium,
-        weight = FontWeight.Medium,
-    ),
-    Font(
-        resource = Res.font.pretendard_bold,
-        weight = FontWeight.Bold,
-    ),
-)
+private fun pretendardFamily(): FontFamily {
+    val regular = Font(resource = Res.font.pretendard_regular, weight = FontWeight.Normal)
+    val medium = Font(resource = Res.font.pretendard_medium, weight = FontWeight.Medium)
+    val bold = Font(resource = Res.font.pretendard_bold, weight = FontWeight.Bold)
+    return remember(regular, medium, bold) {
+        FontFamily(regular, medium, bold)
+    }
+}
 
 object BugleTypography {
     val headlineS
