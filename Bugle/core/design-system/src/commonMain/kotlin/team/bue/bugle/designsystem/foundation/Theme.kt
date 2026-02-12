@@ -33,16 +33,16 @@ private val bugleColorScheme = lightColorScheme(
     onError = BugleColor.error50,
     errorContainer = BugleColor.error100,
     onErrorContainer = BugleColor.error900,
-    outline = BugleColor.pressed,
-    outlineVariant = BugleColor.error400,
-    scrim = BugleColor.gray900,
-    surfaceBright = BugleColor.error200,
-    surfaceDim = BugleColor.error800,
-    surfaceContainer = BugleColor.gray400,
-    surfaceContainerHigh = BugleColor.hover,
-    surfaceContainerHighest = BugleColor.gray500,
-    surfaceContainerLow = BugleColor.button,
-    surfaceContainerLowest = BugleColor.gray300,
+    outline = BugleColor.gray500,
+    outlineVariant = BugleColor.gray300,
+    scrim = BugleColor.black,
+    surfaceBright = BugleColor.white,
+    surfaceDim = BugleColor.gray200,
+    surfaceContainer = BugleColor.gray100,
+    surfaceContainerHigh = BugleColor.gray200,
+    surfaceContainerHighest = BugleColor.gray300,
+    surfaceContainerLow = BugleColor.gray50,
+    surfaceContainerLowest = BugleColor.white,
 )
 
 val LocalBugleColors = staticCompositionLocalOf { bugleColorScheme }
@@ -53,7 +53,10 @@ fun BugleTheme(
 ) {
 
 
-    CompositionLocalProvider(LocalBugleColors provides colors) {
+    CompositionLocalProvider(
+        LocalBugleColors provides colors,
+        LocalBugleTokens provides BugleTokens(),
+    ) {
         content()
     }
 }
@@ -61,4 +64,6 @@ fun BugleTheme(
 object BugleTheme {
     val colors
         @Composable get() = LocalBugleColors.current
+    val tokens
+        @Composable get() = LocalBugleTokens.current
 }
