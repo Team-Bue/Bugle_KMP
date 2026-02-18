@@ -59,6 +59,7 @@ kotlin {
 
             implementation(projects.core.designSystem)
             implementation(projects.feature.splash)
+            implementation(projects.feature.onboarding)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

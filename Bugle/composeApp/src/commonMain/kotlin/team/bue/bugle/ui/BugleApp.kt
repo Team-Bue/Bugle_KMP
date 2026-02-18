@@ -17,8 +17,10 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBar
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBarVisuals
+import team.bue.bugle.feature.onboarding.ui.OnboardingScreen
 import team.bue.bugle.feature.splash.ui.SplashScreen
 import team.bue.bugle.navigation.Home
+import team.bue.bugle.navigation.Onboarding
 import team.bue.bugle.navigation.Splash
 
 @Composable
@@ -39,6 +41,18 @@ fun BugleApp(
                     entry<Splash> {
                         SplashScreen(
                             onNavigateHome = {
+                                backStack.clear()
+                                backStack.add(Onboarding)
+                            },
+                        )
+                    }
+                    entry<Onboarding> {
+                        OnboardingScreen(
+                            onNavigateToKakaoLogin = {
+                                backStack.clear()
+                                backStack.add(Home)
+                            },
+                            onNavigateToEmailLogin = {
                                 backStack.clear()
                                 backStack.add(Home)
                             },
