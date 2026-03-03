@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
@@ -33,14 +34,16 @@ fun BugleApp(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
-        Scaffold {
+        Scaffold(
+            modifier = Modifier.systemBarsPadding()
+        ){
             NavDisplay(
                 backStack = backStack,
                 onBack = { backStack.removeLastOrNull() },
                 entryProvider = entryProvider {
                     entry<Splash> {
                         SplashScreen(
-                            onNavigateHome = {
+                            onSplashCompleted = {
                                 backStack.clear()
                                 backStack.add(Onboarding)
                             },
@@ -49,11 +52,9 @@ fun BugleApp(
                     entry<Onboarding> {
                         OnboardingScreen(
                             onNavigateToKakaoLogin = {
-                                backStack.clear()
                                 backStack.add(Home)
                             },
                             onNavigateToEmailLogin = {
-                                backStack.clear()
                                 backStack.add(Home)
                             },
                         )
