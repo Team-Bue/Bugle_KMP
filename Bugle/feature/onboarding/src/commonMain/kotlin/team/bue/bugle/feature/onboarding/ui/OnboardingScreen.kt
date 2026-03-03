@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -85,8 +87,8 @@ private const val VIRTUAL_PAGE_COUNT = Int.MAX_VALUE
 fun OnboardingScreen(
     onNavigateToKakaoLogin: () -> Unit,
     onNavigateToEmailLogin: () -> Unit,
-    viewModel: OnboardingViewModel = koinViewModel(),
 ) {
+    val viewModel: OnboardingViewModel = koinViewModel()
     val contentAlpha = remember { Animatable(0f) }
 
     LaunchedEffect(Unit) {
@@ -109,7 +111,7 @@ fun OnboardingScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
-            .graphicsLayer(alpha = contentAlpha.value),
+            .graphicsLayer { alpha = contentAlpha.value },
     ) {
         OnboardingContent(
             onKakaoClick = viewModel::onKakaoLoginClick,
@@ -174,11 +176,12 @@ private fun OnboardingCardPager(modifier: Modifier = Modifier) {
     LaunchedEffect(pagerState) {
         while (true) {
             delay(AUTO_SCROLL_DELAY)
-            val nextPage = pagerState.currentPage + 1
-            pagerState.animateScrollToPage(
-                page = nextPage,
-                animationSpec = tween(durationMillis = 600),
-            )
+            if (!pagerState.isScrollInProgress) {
+                pagerState.animateScrollToPage(
+                    page = pagerState.currentPage + 1,
+                    animationSpec = tween(durationMillis = 600),
+                )
+            }
         }
     }
 
@@ -305,13 +308,12 @@ private fun BottomLoginSection(
             icon = {
                 Box(
                     modifier = Modifier
-                        .border(1.dp, BugleColor.gray600, CardShape)
-                        .padding(8.dp)
-                        .clip(CardShape)
-                        .size(48.dp),
+                        .size(48.dp)
+                        .border(1.dp, BugleColor.gray600, CircleShape)
+                        .clip(CircleShape),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Image(
-                        modifier = Modifier.align(Alignment.Center),
                         painter = painterResource(BugleIcon.Email),
                         contentDescription = null,
                     )
