@@ -18,10 +18,18 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBar
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBarVisuals
+import team.bue.bugle.feature.emaillogin.ui.EmailLoginScreen
+import team.bue.bugle.feature.findid.ui.FindIdScreen
+import team.bue.bugle.feature.findpassword.ui.FindPasswordScreen
 import team.bue.bugle.feature.onboarding.ui.OnboardingScreen
+import team.bue.bugle.feature.signup.ui.SignUpScreen
 import team.bue.bugle.feature.splash.ui.SplashScreen
+import team.bue.bugle.navigation.EmailLogin
+import team.bue.bugle.navigation.FindId
+import team.bue.bugle.navigation.FindPassword
 import team.bue.bugle.navigation.Home
 import team.bue.bugle.navigation.Onboarding
+import team.bue.bugle.navigation.SignUp
 import team.bue.bugle.navigation.Splash
 
 @Composable
@@ -55,7 +63,52 @@ fun BugleApp(
                                 backStack.add(Home)
                             },
                             onNavigateToEmailLogin = {
+                                backStack.add(EmailLogin)
+                            },
+                        )
+                    }
+                    entry<EmailLogin> {
+                        EmailLoginScreen(
+                            onBack = {
+                                backStack.removeLastOrNull()
+                            },
+                            onNavigateToHome = {
+                                backStack.clear()
                                 backStack.add(Home)
+                            },
+                            onNavigateToSignUp = {
+                                backStack.add(SignUp)
+                            },
+                            onNavigateToFindPassword = {
+                                backStack.add(FindPassword)
+                            },
+                            onNavigateToFindId = {
+                                backStack.add(FindId)
+                            },
+                        )
+                    }
+                    entry<SignUp> {
+                        SignUpScreen(
+                            onBack = {
+                                backStack.removeLastOrNull()
+                            },
+                            onNavigateToHome = {
+                                backStack.clear()
+                                backStack.add(Home)
+                            },
+                        )
+                    }
+                    entry<FindPassword> {
+                        FindPasswordScreen(
+                            onExit = {
+                                backStack.removeLastOrNull()
+                            },
+                        )
+                    }
+                    entry<FindId> {
+                        FindIdScreen(
+                            onExit = {
+                                backStack.removeLastOrNull()
                             },
                         )
                     }

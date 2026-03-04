@@ -9,4 +9,16 @@ data object Splash
 data object Onboarding
 
 @Serializable
+data object EmailLogin
+
+@Serializable
+data object SignUp
+
+@Serializable
+data object FindPassword
+
+@Serializable
+data object FindId
+
+@Serializable
 data object Home

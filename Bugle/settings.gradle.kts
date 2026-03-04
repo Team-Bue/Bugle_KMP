@@ -39,3 +39,11 @@ include(":core:network")
 include(":core:ui")
 include(":feature:splash")
 include(":feature:onboarding")
+
+include(":feature:email-login")
+
+include(":feature:sign-up")
+
+include(":feature:find-password")
+
+include(":feature:find-id")

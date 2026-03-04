@@ -10,6 +10,7 @@ class BugleApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@BugleApplication)
+            properties(mapOf("BUGLE_BASE_URL" to BuildConfig.BUGLE_BASE_URL))
             modules(appModule)
         }
     }

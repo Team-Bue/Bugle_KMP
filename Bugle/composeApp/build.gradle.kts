@@ -1,6 +1,25 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import team.bue.bugle.buildsrc.ProjectProperties
 import team.bue.bugle.buildsrc.Versions
+import java.util.Properties
+
+
+
+private val defaultBugleBaseUrl = "https://api.bugle.site"
+
+private val bugleBaseUrl: String by lazy {
+    val localProperties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use(localProperties::load)
+    }
+
+    localProperties
+        .getProperty("BUGLE_BASE_URL", defaultBugleBaseUrl)
+        .trim()
+        .removeSurrounding("\"")
+}
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -58,8 +77,13 @@ kotlin {
             implementation(libs.koin.core)
 
             implementation(projects.core.designSystem)
+            implementation(projects.core.data)
             implementation(projects.feature.splash)
             implementation(projects.feature.onboarding)
+            implementation(projects.feature.emailLogin)
+            implementation(projects.feature.signUp)
+            implementation(projects.feature.findPassword)
+            implementation(projects.feature.findId)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -71,12 +95,17 @@ android {
     namespace = "team.bue.bugle"
     compileSdk = ProjectProperties.COMPILE_SDK
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "team.bue.bugle"
         minSdk = ProjectProperties.MIN_SDK
         targetSdk = ProjectProperties.TARGET_SDK
         versionCode = ProjectProperties.VERSION_CODE
         versionName = ProjectProperties.VERSION_NAME
+        buildConfigField("String", "BUGLE_BASE_URL", "\"$bugleBaseUrl\"")
     }
     packaging {
         resources {
@@ -97,4 +126,3 @@ android {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
-
