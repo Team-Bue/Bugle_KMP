@@ -6,4 +6,7 @@ import kotlinx.serialization.Serializable
 data object Splash
 
 @Serializable
+data object Onboarding
+
+@Serializable
 data object Home

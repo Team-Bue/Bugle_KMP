@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
@@ -17,8 +18,10 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBar
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBarVisuals
+import team.bue.bugle.feature.onboarding.ui.OnboardingScreen
 import team.bue.bugle.feature.splash.ui.SplashScreen
 import team.bue.bugle.navigation.Home
+import team.bue.bugle.navigation.Onboarding
 import team.bue.bugle.navigation.Splash
 
 @Composable
@@ -31,15 +34,27 @@ fun BugleApp(
     Box(
         modifier = modifier.fillMaxSize()
     ) {
-        Scaffold {
+        Scaffold(
+            modifier = Modifier.systemBarsPadding()
+        ){
             NavDisplay(
                 backStack = backStack,
                 onBack = { backStack.removeLastOrNull() },
                 entryProvider = entryProvider {
                     entry<Splash> {
                         SplashScreen(
-                            onNavigateHome = {
+                            onSplashCompleted = {
                                 backStack.clear()
+                                backStack.add(Onboarding)
+                            },
+                        )
+                    }
+                    entry<Onboarding> {
+                        OnboardingScreen(
+                            onNavigateToKakaoLogin = {
+                                backStack.add(Home)
+                            },
+                            onNavigateToEmailLogin = {
                                 backStack.add(Home)
                             },
                         )
