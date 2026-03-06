@@ -45,5 +45,3 @@ include(":feature:email-login")
 include(":feature:sign-up")
 
 include(":feature:find-password")
-
-include(":feature:find-id")

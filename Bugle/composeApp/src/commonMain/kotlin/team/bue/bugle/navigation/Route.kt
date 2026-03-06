@@ -18,7 +18,4 @@ data object SignUp
 data object FindPassword
 
 @Serializable
-data object FindId
-
-@Serializable
 data object Home

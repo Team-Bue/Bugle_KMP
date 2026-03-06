@@ -40,7 +40,6 @@ fun EmailLoginScreen(
     onNavigateToHome: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onNavigateToFindPassword: () -> Unit,
-    onNavigateToFindId: () -> Unit,
 ) {
     val viewModel: EmailLoginViewModel = koinViewModel()
 
@@ -60,7 +59,6 @@ fun EmailLoginScreen(
         onLoginClick = viewModel::onLoginClick,
         onNavigateToSignUp = onNavigateToSignUp,
         onFindPasswordClick = onNavigateToFindPassword,
-        onFindIdClick = onNavigateToFindId,
     )
 }
 
@@ -73,7 +71,6 @@ private fun EmailLoginContent(
     onLoginClick: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onFindPasswordClick: () -> Unit,
-    onFindIdClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -141,19 +138,6 @@ private fun EmailLoginContent(
                     style = BugleTypography.textL.copy(color = BugleColor.gray500),
                     modifier = Modifier.clickable(onClick = onFindPasswordClick),
                 )
-                Spacer(Modifier.width(8.dp))
-                Box(
-                    modifier = Modifier
-                        .height(14.dp)
-                        .width(1.dp)
-                        .background(BugleColor.gray500),
-                )
-                Spacer(Modifier.width(8.dp))
-                BasicText(
-                    text = "아이디 찾기",
-                    style = BugleTypography.textL.copy(color = BugleColor.gray500),
-                    modifier = Modifier.clickable(onClick = onFindIdClick),
-                )
             }
 
             Spacer(Modifier.weight(1f))
@@ -184,7 +168,9 @@ private fun EmailLoginContent(
                 text = if (uiState.isLoading) "로그인 중..." else "로그인",
                 onClick = onLoginClick,
                 enabled = uiState.isLoginEnabled,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
             )
         }
     }

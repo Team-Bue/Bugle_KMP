@@ -2,8 +2,6 @@ package team.bue.bugle.core.network.dto.auth
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import team.bue.bugle.core.model.auth.FindAccountIdRequest
-import team.bue.bugle.core.model.auth.FindAccountIdResult
 import team.bue.bugle.core.model.auth.LoginRequest
 import team.bue.bugle.core.model.auth.ResetPasswordRequest
 import team.bue.bugle.core.model.auth.SignUpRequest
@@ -43,18 +41,6 @@ data class ResetPasswordRequestDto(
     val newPassword: String,
 )
 
-@Serializable
-data class FindAccountIdRequestDto(
-    val email: String,
-    val token: String,
-)
-
-@Serializable
-data class FindAccountIdResponseDto(
-    @SerialName("account_id")
-    val accountId: String,
-)
-
 fun LoginRequest.toDto(): LoginRequestDto =
     LoginRequestDto(
         loginId = loginId,
@@ -77,17 +63,8 @@ fun ResetPasswordRequest.toDto(): ResetPasswordRequestDto =
         newPassword = newPassword,
     )
 
-fun FindAccountIdRequest.toDto(): FindAccountIdRequestDto =
-    FindAccountIdRequestDto(
-        email = email,
-        token = token,
-    )
-
 fun TokenPairResponseDto.toDomain(): TokenPair =
     TokenPair(
         accessToken = accessToken,
         refreshToken = refreshToken,
     )
-
-fun FindAccountIdResponseDto.toDomain(): FindAccountIdResult =
-    FindAccountIdResult(accountId = accountId)
