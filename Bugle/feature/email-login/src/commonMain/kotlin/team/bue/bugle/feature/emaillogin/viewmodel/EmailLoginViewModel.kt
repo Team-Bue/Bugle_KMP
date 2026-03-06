@@ -30,10 +30,6 @@ class EmailLoginViewModel(
     }
 
     fun onLoginClick() {
-        // TEMP: UI 확인용 바이패스
-        sendEffect(EmailLoginSideEffect.NavigateToHome)
-        return
-
         val currentState = uiState.value
         if (currentState.loginId.isBlank() || currentState.password.isBlank() || currentState.isLoading) {
             return
@@ -51,12 +47,6 @@ class EmailLoginViewModel(
                 setState { it.copy(isLoading = false) }
                 sendEffect(EmailLoginSideEffect.NavigateToHome)
             }.onFailure { throwable ->
-                if (PREVIEW_BYPASS_API_FAILURE) {
-                    setState { it.copy(isLoading = false, loginIdError = null, passwordError = null) }
-                    sendEffect(EmailLoginSideEffect.NavigateToHome)
-                    return@onFailure
-                }
-
                 val (loginIdError, passwordError) = when (throwable) {
                     is BugleException.InvalidCredentials -> null to "아이디 또는 비밀번호가 올바르지 않습니다."
                     is BugleException.NotFound -> "존재하지 않는 계정입니다." to null
@@ -76,7 +66,6 @@ class EmailLoginViewModel(
     }
 
     companion object {
-        private const val PREVIEW_BYPASS_API_FAILURE = true
         private const val DEFAULT_LOGIN_ERROR_MESSAGE = "아이디 또는 비밀번호를 확인해 주세요."
     }
 }
@@ -89,7 +78,7 @@ data class EmailLoginUiState(
     val passwordError: String? = null,
 ) {
     val isLoginEnabled: Boolean
-        get() = true // TEMP: UI 확인용 바이패스
+        get() = loginId.isNotBlank() && password.isNotBlank() && !isLoading
 }
 
 sealed interface EmailLoginSideEffect {
