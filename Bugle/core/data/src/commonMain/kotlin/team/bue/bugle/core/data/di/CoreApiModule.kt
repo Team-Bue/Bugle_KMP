@@ -17,10 +17,11 @@ import team.bue.bugle.core.datastore.storage.createJwtTokenStore
 import team.bue.bugle.core.domain.repository.AuthRepository
 import team.bue.bugle.core.domain.repository.MailRepository
 import team.bue.bugle.core.domain.repository.UserRepository
-import team.bue.bugle.core.domain.usecase.auth.FindAccountIdUseCase
 import team.bue.bugle.core.domain.usecase.auth.LoginUseCase
+import team.bue.bugle.core.domain.usecase.auth.CompleteKakaoOAuthUseCase
 import team.bue.bugle.core.domain.usecase.auth.ResetPasswordUseCase
 import team.bue.bugle.core.domain.usecase.auth.SignUpUseCase
+import team.bue.bugle.core.domain.usecase.auth.StartKakaoOAuthUseCase
 import team.bue.bugle.core.domain.usecase.mail.SendMailCodeUseCase
 import team.bue.bugle.core.domain.usecase.mail.VerifyMailCodeUseCase
 import team.bue.bugle.core.domain.usecase.user.GetMyProfileUseCase
@@ -48,7 +49,7 @@ val coreApiModule =
         }
         single { createBugleHttpClient(get()) }
 
-        single { AuthApiService(get()) }
+        single { AuthApiService(get(), get()) }
         single { MailApiService(get()) }
         single { UserApiService(get()) }
         single { PostApiService(get()) }
@@ -71,8 +72,9 @@ val coreApiModule =
 
         factory { LoginUseCase(get()) }
         factory { SignUpUseCase(get()) }
-        factory { FindAccountIdUseCase(get()) }
         factory { ResetPasswordUseCase(get()) }
+        factory { StartKakaoOAuthUseCase(get()) }
+        factory { CompleteKakaoOAuthUseCase(get()) }
         factory { SendMailCodeUseCase(get()) }
         factory { VerifyMailCodeUseCase(get()) }
         factory { GetMyProfileUseCase(get()) }

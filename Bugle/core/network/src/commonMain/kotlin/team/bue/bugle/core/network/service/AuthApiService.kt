@@ -5,25 +5,22 @@ import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.patch
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import kotlinx.serialization.json.Json
-import team.bue.bugle.core.network.dto.auth.FindAccountIdRequestDto
-import team.bue.bugle.core.network.dto.auth.FindAccountIdResponseDto
 import team.bue.bugle.core.network.dto.auth.LoginRequestDto
 import team.bue.bugle.core.network.dto.auth.ResetPasswordRequestDto
 import team.bue.bugle.core.network.dto.auth.SignUpRequestDto
 import team.bue.bugle.core.network.dto.auth.TokenPairResponseDto
+import team.bue.bugle.core.network.config.BugleNetworkConfig
 
 class AuthApiService(
     private val client: HttpClient,
+    private val networkConfig: BugleNetworkConfig,
 ) {
-    private val json = Json { ignoreUnknownKeys = true }
-
     suspend fun login(request: LoginRequestDto): TokenPairResponseDto =
         client.post("/auth/login") {
             header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
@@ -60,28 +57,18 @@ class AuthApiService(
         }
     }
 
-    suspend fun findAccountId(request: FindAccountIdRequestDto): FindAccountIdResponseDto {
-        val response =
-            client.post("/auth/account-id") {
-                header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                setBody(request)
+    suspend fun startKakaoOAuth(): String {
+        return "${networkConfig.baseUrl}/auth/oauth2/authorization/kakao"
+    }
+
+    suspend fun completeKakaoOAuth(
+        code: String,
+        state: String?,
+    ): TokenPairResponseDto =
+        client.get("/bugle/oauth2/kakao") {
+            parameter("code", code)
+            if (!state.isNullOrBlank()) {
+                parameter("state", state)
             }
-
-        val rawBody = response.bodyAsText().trim()
-        if (rawBody.isBlank()) {
-            return FindAccountIdResponseDto(accountId = "")
-        }
-
-        return runCatching {
-            json.decodeFromString(FindAccountIdResponseDto.serializer(), rawBody)
-        }.getOrElse {
-            FindAccountIdResponseDto(accountId = rawBody.removeSurrounding("\""))
-        }
-    }
-
-    suspend fun startKakaoOAuth() {
-        client.get("/auth/oauth2/authorization/kakao")
-    }
-
-    suspend fun completeKakaoOAuth(): TokenPairResponseDto = client.get("/bugle/oauth2/kakao").body()
+        }.body()
 }

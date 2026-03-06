@@ -1,7 +1,5 @@
 package team.bue.bugle.core.data.datasource
 
-import team.bue.bugle.core.model.auth.FindAccountIdRequest
-import team.bue.bugle.core.model.auth.FindAccountIdResult
 import team.bue.bugle.core.model.auth.LoginRequest
 import team.bue.bugle.core.model.auth.ResetPasswordRequest
 import team.bue.bugle.core.model.auth.SignUpRequest
@@ -15,9 +13,14 @@ interface AuthRemoteDataSource {
 
     suspend fun signUp(request: SignUpRequest): TokenPair
 
-    suspend fun findAccountId(request: FindAccountIdRequest): FindAccountIdResult
-
     suspend fun resetPassword(request: ResetPasswordRequest)
+
+    suspend fun startKakaoOAuth(): String
+
+    suspend fun completeKakaoOAuth(
+        code: String,
+        state: String?,
+    ): TokenPair
 }
 
 class AuthRemoteDataSourceImpl(
@@ -31,11 +34,18 @@ class AuthRemoteDataSourceImpl(
         return authApiService.signUp(request.toDto()).toDomain()
     }
 
-    override suspend fun findAccountId(request: FindAccountIdRequest): FindAccountIdResult {
-        return authApiService.findAccountId(request.toDto()).toDomain()
-    }
-
     override suspend fun resetPassword(request: ResetPasswordRequest) {
         authApiService.resetPassword(request.toDto())
     }
+
+    override suspend fun startKakaoOAuth(): String = authApiService.startKakaoOAuth()
+
+    override suspend fun completeKakaoOAuth(
+        code: String,
+        state: String?,
+    ): TokenPair =
+        authApiService.completeKakaoOAuth(
+            code = code,
+            state = state,
+        ).toDomain()
 }

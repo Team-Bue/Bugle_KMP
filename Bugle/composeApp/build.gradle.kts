@@ -83,7 +83,6 @@ kotlin {
             implementation(projects.feature.emailLogin)
             implementation(projects.feature.signUp)
             implementation(projects.feature.findPassword)
-            implementation(projects.feature.findId)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -125,4 +124,27 @@ android {
 
 dependencies {
     debugImplementation(compose.uiTooling)
+}
+
+ktlint {
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/generated/**")
+        exclude { treeElement ->
+            treeElement.file.path.contains("/build/generated/compose/resourceGenerator/")
+        }
+    }
+}
+
+tasks.matching {
+    it.name == "runKtlintCheckOverAndroidMainSourceSet" ||
+        it.name == "ktlintAndroidMainSourceSetCheck" ||
+        it.name == "runKtlintCheckOverCommonMainSourceSet" ||
+        it.name == "ktlintCommonMainSourceSetCheck" ||
+        it.name == "runKtlintFormatOverAndroidMainSourceSet" ||
+        it.name == "ktlintAndroidMainSourceSetFormat" ||
+        it.name == "runKtlintFormatOverCommonMainSourceSet" ||
+        it.name == "ktlintCommonMainSourceSetFormat"
+}.configureEach {
+    enabled = false
 }

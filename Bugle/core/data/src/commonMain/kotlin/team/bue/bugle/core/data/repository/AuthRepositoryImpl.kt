@@ -5,8 +5,6 @@ import io.ktor.client.plugins.ServerResponseException
 import team.bue.bugle.core.data.datasource.AuthRemoteDataSource
 import team.bue.bugle.core.data.datasource.TokenLocalDataSource
 import team.bue.bugle.core.domain.repository.AuthRepository
-import team.bue.bugle.core.model.auth.FindAccountIdRequest
-import team.bue.bugle.core.model.auth.FindAccountIdResult
 import team.bue.bugle.core.model.auth.LoginRequest
 import team.bue.bugle.core.model.auth.ResetPasswordRequest
 import team.bue.bugle.core.model.auth.SignUpRequest
@@ -37,17 +35,33 @@ class AuthRepositoryImpl(
             onFailure = { Result.failure(it.toBugleException()) },
         )
 
-    override suspend fun findAccountId(request: FindAccountIdRequest): Result<FindAccountIdResult> =
+    override suspend fun resetPassword(request: ResetPasswordRequest): Result<Unit> =
         runCatching {
-            authRemoteDataSource.findAccountId(request)
+            authRemoteDataSource.resetPassword(request)
         }.fold(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(it.toBugleException()) },
         )
 
-    override suspend fun resetPassword(request: ResetPasswordRequest): Result<Unit> =
+    override suspend fun startKakaoOAuth(): Result<String> =
         runCatching {
-            authRemoteDataSource.resetPassword(request)
+            authRemoteDataSource.startKakaoOAuth()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { Result.failure(it.toBugleException()) },
+        )
+
+    override suspend fun completeKakaoOAuth(
+        code: String,
+        state: String?,
+    ): Result<TokenPair> =
+        runCatching {
+            authRemoteDataSource.completeKakaoOAuth(
+                code = code,
+                state = state,
+            ).also { tokenPair ->
+                tokenLocalDataSource.save(tokenPair)
+            }
         }.fold(
             onSuccess = { Result.success(it) },
             onFailure = { Result.failure(it.toBugleException()) },
