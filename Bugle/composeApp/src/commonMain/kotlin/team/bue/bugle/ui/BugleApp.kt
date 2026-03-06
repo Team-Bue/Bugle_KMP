@@ -19,14 +19,14 @@ import androidx.navigation3.ui.NavDisplay
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBar
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBarVisuals
 import team.bue.bugle.feature.emaillogin.ui.EmailLoginScreen
-import team.bue.bugle.feature.findpassword.ui.FindPasswordScreen
 import team.bue.bugle.feature.onboarding.ui.OnboardingScreen
+import team.bue.bugle.feature.resetpassword.ui.ResetPasswordScreen
 import team.bue.bugle.feature.signup.ui.SignUpScreen
 import team.bue.bugle.feature.splash.ui.SplashScreen
 import team.bue.bugle.navigation.EmailLogin
-import team.bue.bugle.navigation.FindPassword
 import team.bue.bugle.navigation.Home
 import team.bue.bugle.navigation.Onboarding
+import team.bue.bugle.navigation.ResetPassword
 import team.bue.bugle.navigation.SignUp
 import team.bue.bugle.navigation.Splash
 
@@ -81,8 +81,8 @@ fun BugleApp(
                                 onNavigateToSignUp = {
                                     backStack.add(SignUp)
                                 },
-                                onNavigateToFindPassword = {
-                                    backStack.add(FindPassword)
+                                onNavigateToResetPassword = {
+                                    backStack.add(ResetPassword)
                                 },
                             )
                         }
@@ -96,8 +96,8 @@ fun BugleApp(
                                 },
                             )
                         }
-                        entry<FindPassword> {
-                            FindPasswordScreen(
+                        entry<ResetPassword> {
+                            ResetPasswordScreen(
                                 onExit = {
                                     backStack.removeLastOrNull()
                                 },

@@ -39,7 +39,7 @@ fun EmailLoginScreen(
     onBack: () -> Unit,
     onNavigateToHome: () -> Unit,
     onNavigateToSignUp: () -> Unit,
-    onNavigateToFindPassword: () -> Unit,
+    onNavigateToResetPassword: () -> Unit,
 ) {
     val viewModel: EmailLoginViewModel = koinViewModel()
 
@@ -58,7 +58,7 @@ fun EmailLoginScreen(
         onPasswordChange = viewModel::onPasswordChange,
         onLoginClick = viewModel::onLoginClick,
         onNavigateToSignUp = onNavigateToSignUp,
-        onFindPasswordClick = onNavigateToFindPassword,
+        onResetPasswordClick = onNavigateToResetPassword,
     )
 }
 
@@ -70,7 +70,7 @@ private fun EmailLoginContent(
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
     onNavigateToSignUp: () -> Unit,
-    onFindPasswordClick: () -> Unit,
+    onResetPasswordClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -136,7 +136,7 @@ private fun EmailLoginContent(
                 BasicText(
                     text = "비밀번호 찾기",
                     style = BugleTypography.textL.copy(color = BugleColor.gray500),
-                    modifier = Modifier.clickable(onClick = onFindPasswordClick),
+                    modifier = Modifier.clickable(onClick = onResetPasswordClick),
                 )
             }
 

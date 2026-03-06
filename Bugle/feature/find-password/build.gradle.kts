@@ -27,7 +27,7 @@ kotlin {
         iosSimulatorArm64(),
     ).forEach {
         it.binaries.framework {
-            baseName = "find-password"
+            baseName = "reset-password"
             isStatic = true
         }
     }
@@ -53,7 +53,7 @@ kotlin {
 }
 
 android {
-    namespace = "team.bue.bugle.feature.findpassword"
+    namespace = "team.bue.bugle.feature.resetpassword"
     compileSdk = ProjectProperties.COMPILE_SDK
     defaultConfig {
         minSdk = ProjectProperties.MIN_SDK

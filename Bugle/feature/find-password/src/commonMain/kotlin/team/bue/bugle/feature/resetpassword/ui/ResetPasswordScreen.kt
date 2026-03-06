@@ -1,4 +1,4 @@
-package team.bue.bugle.feature.findpassword.ui
+package team.bue.bugle.feature.resetpassword.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,27 +27,27 @@ import team.bue.bugle.designsystem.foundation.BugleTypography
 import team.bue.bugle.designsystem.textfield.BugleTextField
 import team.bue.bugle.designsystem.textfield.BugleVerificationCodeField
 import team.bue.bugle.designsystem.util.clickable
-import team.bue.bugle.feature.findpassword.viewmodel.FindPasswordSideEffect
-import team.bue.bugle.feature.findpassword.viewmodel.FindPasswordStep
-import team.bue.bugle.feature.findpassword.viewmodel.FindPasswordUiState
-import team.bue.bugle.feature.findpassword.viewmodel.FindPasswordViewModel
+import team.bue.bugle.feature.resetpassword.viewmodel.ResetPasswordSideEffect
+import team.bue.bugle.feature.resetpassword.viewmodel.ResetPasswordStep
+import team.bue.bugle.feature.resetpassword.viewmodel.ResetPasswordUiState
+import team.bue.bugle.feature.resetpassword.viewmodel.ResetPasswordViewModel
 
 @Composable
-fun FindPasswordScreen(
+fun ResetPasswordScreen(
     onExit: () -> Unit,
 ) {
-    val viewModel: FindPasswordViewModel = koinViewModel()
+    val viewModel: ResetPasswordViewModel = koinViewModel()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
-                FindPasswordSideEffect.Exit -> onExit()
+                ResetPasswordSideEffect.Exit -> onExit()
             }
         }
     }
 
-    FindPasswordContent(
+    ResetPasswordContent(
         uiState = uiState,
         onBack = viewModel::onBack,
         onEmailChange = viewModel::onEmailChange,
@@ -61,8 +61,8 @@ fun FindPasswordScreen(
 }
 
 @Composable
-private fun FindPasswordContent(
-    uiState: FindPasswordUiState,
+private fun ResetPasswordContent(
+    uiState: ResetPasswordUiState,
     onBack: () -> Unit,
     onEmailChange: (String) -> Unit,
     onCodeChange: (String) -> Unit,
@@ -93,15 +93,15 @@ private fun FindPasswordContent(
 
             val title =
                 when (uiState.step) {
-                    FindPasswordStep.ENTER_EMAIL -> "사용자님의\n이메일을 알려주세요!"
-                    FindPasswordStep.VERIFY_CODE -> "인증코드를\n입력해주세요!"
-                    FindPasswordStep.RESET_PASSWORD -> "비밀번호를\n재설정해주세요!"
+                    ResetPasswordStep.ENTER_EMAIL -> "사용자님의\n이메일을 알려주세요!"
+                    ResetPasswordStep.VERIFY_CODE -> "인증코드를\n입력해주세요!"
+                    ResetPasswordStep.RESET_PASSWORD -> "비밀번호를\n재설정해주세요!"
                 }
             val subtitle =
                 when (uiState.step) {
-                    FindPasswordStep.ENTER_EMAIL -> "인증 코드를 받을 이메일을 작성해주세요."
-                    FindPasswordStep.VERIFY_CODE -> "작성하신 이메일로 인증코드가 전송되었어요!"
-                    FindPasswordStep.RESET_PASSWORD -> "다른 사람이 유추하지 못하는 비밀번호로 설정해주세요!"
+                    ResetPasswordStep.ENTER_EMAIL -> "인증 코드를 받을 이메일을 작성해주세요."
+                    ResetPasswordStep.VERIFY_CODE -> "작성하신 이메일로 인증코드가 전송되었어요!"
+                    ResetPasswordStep.RESET_PASSWORD -> "다른 사람이 유추하지 못하는 비밀번호로 설정해주세요!"
                 }
 
             BasicText(
@@ -119,7 +119,7 @@ private fun FindPasswordContent(
             Spacer(Modifier.height(24.dp))
 
             when (uiState.step) {
-                FindPasswordStep.ENTER_EMAIL -> {
+                ResetPasswordStep.ENTER_EMAIL -> {
                     BugleTextField(
                         value = uiState.email,
                         onValueChange = onEmailChange,
@@ -131,7 +131,7 @@ private fun FindPasswordContent(
                     )
                 }
 
-                FindPasswordStep.VERIFY_CODE -> {
+                ResetPasswordStep.VERIFY_CODE -> {
                     BugleVerificationCodeField(
                         code = uiState.code,
                         onCodeChange = onCodeChange,
@@ -147,7 +147,7 @@ private fun FindPasswordContent(
                     }
                 }
 
-                FindPasswordStep.RESET_PASSWORD -> {
+                ResetPasswordStep.RESET_PASSWORD -> {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(24.dp),
                     ) {
@@ -176,31 +176,31 @@ private fun FindPasswordContent(
                 }
             }
 
-            if (uiState.step != FindPasswordStep.VERIFY_CODE) {
+            if (uiState.step != ResetPasswordStep.VERIFY_CODE) {
                 Spacer(Modifier.weight(1f))
             }
 
-            if (uiState.step == FindPasswordStep.VERIFY_CODE) {
+            if (uiState.step == ResetPasswordStep.VERIFY_CODE) {
                 Spacer(Modifier.height(24.dp))
             }
 
             val buttonText =
                 when (uiState.step) {
-                    FindPasswordStep.ENTER_EMAIL -> "다음"
-                    FindPasswordStep.VERIFY_CODE -> "다음"
-                    FindPasswordStep.RESET_PASSWORD -> "완료"
+                    ResetPasswordStep.ENTER_EMAIL -> "다음"
+                    ResetPasswordStep.VERIFY_CODE -> "다음"
+                    ResetPasswordStep.RESET_PASSWORD -> "완료"
                 }
             val buttonEnabled =
                 when (uiState.step) {
-                    FindPasswordStep.ENTER_EMAIL -> uiState.email.isNotBlank() && !uiState.isLoading
-                    FindPasswordStep.VERIFY_CODE -> uiState.code.length == 6 && !uiState.isLoading
-                    FindPasswordStep.RESET_PASSWORD -> uiState.password.isNotBlank() && uiState.passwordConfirm.isNotBlank() && !uiState.isLoading
+                    ResetPasswordStep.ENTER_EMAIL -> uiState.email.isNotBlank() && !uiState.isLoading
+                    ResetPasswordStep.VERIFY_CODE -> uiState.code.length == 6 && !uiState.isLoading
+                    ResetPasswordStep.RESET_PASSWORD -> uiState.password.isNotBlank() && uiState.passwordConfirm.isNotBlank() && !uiState.isLoading
                 }
             val action =
                 when (uiState.step) {
-                    FindPasswordStep.ENTER_EMAIL -> onSendCode
-                    FindPasswordStep.VERIFY_CODE -> onVerifyCode
-                    FindPasswordStep.RESET_PASSWORD -> onResetPassword
+                    ResetPasswordStep.ENTER_EMAIL -> onSendCode
+                    ResetPasswordStep.VERIFY_CODE -> onVerifyCode
+                    ResetPasswordStep.RESET_PASSWORD -> onResetPassword
                 }
 
             BugleButton(

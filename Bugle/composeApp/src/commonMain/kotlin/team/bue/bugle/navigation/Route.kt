@@ -15,7 +15,7 @@ data object EmailLogin
 data object SignUp
 
 @Serializable
-data object FindPassword
+data object ResetPassword
 
 @Serializable
 data object Home

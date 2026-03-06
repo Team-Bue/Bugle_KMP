@@ -1,4 +1,4 @@
-package team.bue.bugle.feature.findpassword.viewmodel
+package team.bue.bugle.feature.resetpassword.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -11,17 +11,17 @@ import team.bue.bugle.core.model.mail.SendMailCodeRequest
 import team.bue.bugle.core.model.mail.VerifyMailCodeRequest
 import team.bue.bugle.core.ui.BaseViewModel
 
-enum class FindPasswordStep {
+enum class ResetPasswordStep {
     ENTER_EMAIL,
     VERIFY_CODE,
     RESET_PASSWORD,
 }
 
-class FindPasswordViewModel(
+class ResetPasswordViewModel(
     private val sendMailCodeUseCase: SendMailCodeUseCase,
     private val verifyMailCodeUseCase: VerifyMailCodeUseCase,
     private val resetPasswordUseCase: ResetPasswordUseCase,
-) : BaseViewModel<FindPasswordUiState, FindPasswordSideEffect>(FindPasswordUiState()) {
+) : BaseViewModel<ResetPasswordUiState, ResetPasswordSideEffect>(ResetPasswordUiState()) {
 
     fun onEmailChange(value: String) = setState { it.copy(email = value, emailError = null) }
 
@@ -34,9 +34,9 @@ class FindPasswordViewModel(
 
     fun onBack() {
         when (uiState.value.step) {
-            FindPasswordStep.ENTER_EMAIL -> sendEffect(FindPasswordSideEffect.Exit)
-            FindPasswordStep.VERIFY_CODE -> setState { it.copy(step = FindPasswordStep.ENTER_EMAIL, codeError = null) }
-            FindPasswordStep.RESET_PASSWORD -> setState { it.copy(step = FindPasswordStep.VERIFY_CODE, passwordError = null) }
+            ResetPasswordStep.ENTER_EMAIL -> sendEffect(ResetPasswordSideEffect.Exit)
+            ResetPasswordStep.VERIFY_CODE -> setState { it.copy(step = ResetPasswordStep.ENTER_EMAIL, codeError = null) }
+            ResetPasswordStep.RESET_PASSWORD -> setState { it.copy(step = ResetPasswordStep.VERIFY_CODE, passwordError = null) }
         }
     }
 
@@ -54,7 +54,7 @@ class FindPasswordViewModel(
                 setState {
                     it.copy(
                         isLoading = false,
-                        step = FindPasswordStep.VERIFY_CODE,
+                        step = ResetPasswordStep.VERIFY_CODE,
                         verificationToken = null,
                     )
                 }
@@ -87,7 +87,7 @@ class FindPasswordViewModel(
                     setState {
                         it.copy(
                             isLoading = false,
-                            step = FindPasswordStep.RESET_PASSWORD,
+                            step = ResetPasswordStep.RESET_PASSWORD,
                             verificationToken = token,
                         )
                     }
@@ -126,7 +126,7 @@ class FindPasswordViewModel(
                 ),
             ).onSuccess {
                 setState { it.copy(isLoading = false) }
-                sendEffect(FindPasswordSideEffect.Exit)
+                sendEffect(ResetPasswordSideEffect.Exit)
             }.onFailure { throwable ->
                 setState {
                     it.copy(
@@ -152,8 +152,8 @@ private fun Throwable.toResetPasswordErrorMessage(): String =
         else -> "비밀번호 재설정에 실패했습니다."
     }
 
-data class FindPasswordUiState(
-    val step: FindPasswordStep = FindPasswordStep.ENTER_EMAIL,
+data class ResetPasswordUiState(
+    val step: ResetPasswordStep = ResetPasswordStep.ENTER_EMAIL,
     val email: String = "",
     val code: String = "",
     val verificationToken: String? = null,
@@ -166,6 +166,6 @@ data class FindPasswordUiState(
     val submitError: String? = null,
 )
 
-sealed interface FindPasswordSideEffect {
-    data object Exit : FindPasswordSideEffect
+sealed interface ResetPasswordSideEffect {
+    data object Exit : ResetPasswordSideEffect
 }
