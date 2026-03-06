@@ -16,6 +16,7 @@ import bugle.core.design_system.generated.resources.img_kakao
 import bugle.core.design_system.generated.resources.img_kakao_disabled
 import bugle.core.design_system.generated.resources.ic_link
 import bugle.core.design_system.generated.resources.ic_link_off
+import bugle.core.design_system.generated.resources.img_3d_logo
 
 object BugleIcon {
     val AppLogo = Res.drawable.ic_app_logo
@@ -33,4 +34,5 @@ object BugleIcon {
     val KakaoDisabled = Res.drawable.img_kakao_disabled
     val Link = Res.drawable.ic_link
     val LinkOff = Res.drawable.ic_link_off
+    val ThreeDLogo = Res.drawable.img_3d_logo
 }

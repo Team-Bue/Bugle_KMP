@@ -208,6 +208,27 @@ class SignUpViewModel(
         )
     }
 
+    fun onAgreeServiceTerm() = setState {
+        it.copy(
+            isAgreedServiceTerm = true,
+            signUpError = null,
+        )
+    }
+
+    fun onAgreePrivacyTerm() = setState {
+        it.copy(
+            isAgreedPrivacyTerm = true,
+            signUpError = null,
+        )
+    }
+
+    fun onAgreeMarketingTerm() = setState {
+        it.copy(
+            isAgreedMarketingTerm = true,
+            signUpError = null,
+        )
+    }
+
     fun onSignUp() {
         val state = uiState.value
         if (state.isLoading) return
