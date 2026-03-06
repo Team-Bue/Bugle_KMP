@@ -44,6 +44,8 @@ kotlin {
 
             implementation(projects.core.designSystem)
             implementation(projects.core.ui)
+            implementation(projects.core.domain)
+            implementation(projects.core.model)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
         }

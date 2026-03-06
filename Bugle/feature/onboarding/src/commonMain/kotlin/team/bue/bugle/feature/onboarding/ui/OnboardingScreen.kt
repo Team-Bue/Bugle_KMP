@@ -1,5 +1,6 @@
 package team.bue.bugle.feature.onboarding.ui
 
+import co.touchlab.kermit.Logger
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -27,6 +28,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +52,7 @@ import bugle.feature.onboarding.generated.resources.img_onboarding_trip_4
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 import team.bue.bugle.designsystem.button.BugleSocialButton
 import team.bue.bugle.designsystem.foundation.BugleColor
@@ -82,22 +85,38 @@ private val onboardingCards = listOf(
 
 private const val AUTO_SCROLL_DELAY = 3000L
 private const val VIRTUAL_PAGE_COUNT = Int.MAX_VALUE
+private val logger = Logger.withTag("OnboardingScreen")
 
 @Composable
 fun OnboardingScreen(
-    onNavigateToKakaoLogin: () -> Unit,
+    pendingKakaoRedirectUri: String?,
+    onConsumeKakaoRedirect: () -> Unit,
+    onNavigateToHome: () -> Unit,
     onNavigateToEmailLogin: () -> Unit,
 ) {
     val viewModel: OnboardingViewModel = koinViewModel()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle().value
     val contentAlpha = remember { Animatable(0f) }
+    val uriHandler = LocalUriHandler.current
 
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
-                OnboardingSideEffect.NavigateToKakaoLogin -> onNavigateToKakaoLogin()
+                is OnboardingSideEffect.OpenKakaoLogin -> {
+                    logger.i { "OpenKakaoLogin side effect received. url=${effect.url.toSafeLogValue()}" }
+                    uriHandler.openUri(effect.url)
+                }
+                OnboardingSideEffect.NavigateToHome -> onNavigateToHome()
                 OnboardingSideEffect.NavigateToEmailLogin -> onNavigateToEmailLogin()
             }
         }
+    }
+
+    LaunchedEffect(pendingKakaoRedirectUri) {
+        val redirectUri = pendingKakaoRedirectUri ?: return@LaunchedEffect
+        logger.i { "pendingKakaoRedirectUri received from MainActivity. uri=${redirectUri.toSafeLogValue()}" }
+        viewModel.handleKakaoRedirect(redirectUri)
+        onConsumeKakaoRedirect()
     }
 
     LaunchedEffect(Unit) {
@@ -116,6 +135,7 @@ fun OnboardingScreen(
         OnboardingContent(
             onKakaoClick = viewModel::onKakaoLoginClick,
             onEmailClick = viewModel::onEmailLoginClick,
+            kakaoLoginEnabled = !uiState.isLoading,
         )
     }
 }
@@ -124,6 +144,7 @@ fun OnboardingScreen(
 private fun OnboardingContent(
     onKakaoClick: () -> Unit,
     onEmailClick: () -> Unit,
+    kakaoLoginEnabled: Boolean,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -159,6 +180,7 @@ private fun OnboardingContent(
         BottomLoginSection(
             onKakaoClick = onKakaoClick,
             onEmailClick = onEmailClick,
+            kakaoLoginEnabled = kakaoLoginEnabled,
         )
     }
 }
@@ -271,6 +293,7 @@ private fun OnboardingCard(
 private fun BottomLoginSection(
     onKakaoClick: () -> Unit,
     onEmailClick: () -> Unit,
+    kakaoLoginEnabled: Boolean,
 ) {
     Column(
         modifier = Modifier
@@ -291,6 +314,7 @@ private fun BottomLoginSection(
         BugleSocialButton(
             text = "카카오로 시작하기",
             onClick = onKakaoClick,
+            enabled = kakaoLoginEnabled,
             icon = {
                 Image(
                     painter = painterResource(BugleIcon.Kakao),
@@ -353,4 +377,23 @@ private fun DividerWithText(text: String) {
                 .background(BugleColor.gray600),
         )
     }
+}
+
+private fun String.toSafeLogValue(): String {
+    val scheme = substringBefore("://", missingDelimiterValue = "")
+    val afterScheme = substringAfter("://", missingDelimiterValue = "")
+    val host = afterScheme
+        .substringBefore('/', missingDelimiterValue = afterScheme)
+        .substringBefore('?', missingDelimiterValue = afterScheme)
+        .substringBefore('#', missingDelimiterValue = afterScheme)
+    val path = if ('/' in afterScheme) {
+        "/" + afterScheme
+            .substringAfter('/', missingDelimiterValue = "")
+            .substringBefore('?', missingDelimiterValue = "")
+            .substringBefore('#', missingDelimiterValue = "")
+            .trimStart('/')
+    } else {
+        ""
+    }
+    return "$scheme://$host$path"
 }

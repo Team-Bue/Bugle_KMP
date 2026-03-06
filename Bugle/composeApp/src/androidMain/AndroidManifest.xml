@@ -13,6 +13,7 @@
             android:theme="@android:style/Theme.Material.Light.NoActionBar">
         <activity
                 android:exported="true"
+                android:launchMode="singleTop"
                 android:theme="@style/Theme.Bugle.Splash"
                 android:name=".MainActivity">
             <intent-filter>
@@ -20,6 +21,31 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                        android:scheme="https"
+                        android:host="api.bugle.site"
+                        android:pathPrefix="/bugle/oauth2/kakao" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                        android:scheme="https"
+                        android:host="bugle.team"
+                        android:path="/auth/oauth2" />
+            </intent-filter>
+
         </activity>
     </application>
 
