@@ -82,7 +82,7 @@ kotlin {
             implementation(projects.feature.onboarding)
             implementation(projects.feature.emailLogin)
             implementation(projects.feature.signUp)
-            implementation(projects.feature.findPassword)
+            implementation(projects.feature.resetPassword)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
