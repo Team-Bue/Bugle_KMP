@@ -207,7 +207,9 @@ private fun FindPasswordContent(
                 text = buttonText,
                 onClick = action,
                 enabled = buttonEnabled,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp),
             )
         }
     }

@@ -6,6 +6,7 @@ import team.bue.bugle.core.domain.usecase.auth.ResetPasswordUseCase
 import team.bue.bugle.core.domain.usecase.mail.SendMailCodeUseCase
 import team.bue.bugle.core.domain.usecase.mail.VerifyMailCodeUseCase
 import team.bue.bugle.core.model.auth.ResetPasswordRequest
+import team.bue.bugle.core.model.exception.BugleException
 import team.bue.bugle.core.model.mail.SendMailCodeRequest
 import team.bue.bugle.core.model.mail.VerifyMailCodeRequest
 import team.bue.bugle.core.ui.BaseViewModel
@@ -126,8 +127,13 @@ class FindPasswordViewModel(
             ).onSuccess {
                 setState { it.copy(isLoading = false) }
                 sendEffect(FindPasswordSideEffect.Exit)
-            }.onFailure {
-                setState { it.copy(isLoading = false, submitError = "비밀번호 재설정에 실패했습니다.") }
+            }.onFailure { throwable ->
+                setState {
+                    it.copy(
+                        isLoading = false,
+                        submitError = throwable.toResetPasswordErrorMessage(),
+                    )
+                }
             }
         }
     }
@@ -138,6 +144,13 @@ class FindPasswordViewModel(
         private val PASSWORD_REGEX = Regex("^(?=.*[@#!%&*])[A-Za-z0-9@#!%&*]{8,30}$")
     }
 }
+
+private fun Throwable.toResetPasswordErrorMessage(): String =
+    when (this) {
+        is BugleException.NetworkError -> "네트워크 연결을 확인해 주세요."
+        is BugleException.ServerError -> "서버에 문제가 발생했습니다."
+        else -> "비밀번호 재설정에 실패했습니다."
+    }
 
 data class FindPasswordUiState(
     val step: FindPasswordStep = FindPasswordStep.ENTER_EMAIL,
