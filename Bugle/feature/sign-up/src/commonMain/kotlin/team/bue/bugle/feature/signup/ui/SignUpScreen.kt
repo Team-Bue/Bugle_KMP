@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +24,11 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -97,18 +105,6 @@ fun SignUpScreen(
                 onPasswordConfirmChange = viewModel::onPasswordConfirmChange,
                 onNext = viewModel::onNextFromPassword,
             )
-            SignUpStep.AGREE_TERMS -> TermsAgreementStep(
-                uiState = uiState,
-                onBack = viewModel::onBack,
-                onToggleAll = viewModel::onToggleAllTerms,
-                onToggleService = viewModel::onToggleServiceTerm,
-                onTogglePrivacy = viewModel::onTogglePrivacyTerm,
-                onToggleMarketing = viewModel::onToggleMarketingTerm,
-                onAgreeService = viewModel::onAgreeServiceTerm,
-                onAgreePrivacy = viewModel::onAgreePrivacyTerm,
-                onAgreeMarketing = viewModel::onAgreeMarketingTerm,
-                onNext = viewModel::onSignUp,
-            )
             SignUpStep.SET_ACCOUNT_ID -> SetAccountIdStep(
                 uiState = uiState,
                 onBack = viewModel::onBack,
@@ -120,6 +116,18 @@ fun SignUpScreen(
                 onBack = viewModel::onBack,
                 onUserNameChange = viewModel::onUserNameChange,
                 onNext = viewModel::onNextFromUserName,
+            )
+            SignUpStep.AGREE_TERMS -> TermsAgreementStep(
+                uiState = uiState,
+                onBack = viewModel::onBack,
+                onToggleAll = viewModel::onToggleAllTerms,
+                onToggleService = viewModel::onToggleServiceTerm,
+                onTogglePrivacy = viewModel::onTogglePrivacyTerm,
+                onToggleMarketing = viewModel::onToggleMarketingTerm,
+                onAgreeService = viewModel::onAgreeServiceTerm,
+                onAgreePrivacy = viewModel::onAgreePrivacyTerm,
+                onAgreeMarketing = viewModel::onAgreeMarketingTerm,
+                onNext = viewModel::onSignUp,
             )
             SignUpStep.COMPLETE -> CompleteStep(
                 onCompleteClick = viewModel::onCompleteClick,
@@ -147,7 +155,7 @@ private fun EnterEmailStep(
         title = "사용자님의\n이메일을 알려주세요!",
         subtitle = "인증 코드를 받을 이메일을 작성해주세요.",
         buttonText = if (uiState.isLoading) "발송 중..." else "인증코드 발송",
-        buttonEnabled = !uiState.isLoading, // TEMP: UI 확인용 바이패스
+        buttonEnabled = !uiState.isLoading,
         onButtonClick = onSendCode,
     ) {
         BugleTextField(
@@ -374,12 +382,12 @@ private fun CompleteStep(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .background(BugleColor.black),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -433,8 +441,7 @@ private fun TermsAgreementStep(
     onAgreeMarketing: () -> Unit,
     onNext: () -> Unit,
 ) {
-    var detailType by remember { mutableStateOf<TermDetailType?>(null) }
-    val isDetailMode = detailType != null
+    var expandedType by remember { mutableStateOf<TermDetailType?>(null) }
 
     Box(
         modifier = Modifier
@@ -452,10 +459,10 @@ private fun TermsAgreementStep(
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .then(
-                    if (isDetailMode) {
-                        Modifier.fillMaxHeight(0.9f)
+                    if (expandedType == null) {
+                        Modifier.wrapContentHeight()
                     } else {
-                        Modifier.height(435.dp)
+                        Modifier.fillMaxHeight(0.9f)
                     },
                 )
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
@@ -463,96 +470,128 @@ private fun TermsAgreementStep(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 40.dp),
             ) {
-                if (isDetailMode) {
+                BasicText(
+                    text = "시작에 앞서,\n약관에 동의를 해주세요!",
+                    style = BugleTypography.sTitleM.copy(color = BugleColor.white),
+                )
+
+                Spacer(Modifier.height(20.dp))
+
+                AllAgreementRow(
+                    checked = uiState.isAllTermsAgreed,
+                    onToggle = onToggleAll,
+                )
+
+                Spacer(Modifier.height(20.dp))
+
+                AgreementTrailingRow(
+                    text = "서비스 이용 약관 동의 (필수)",
+                    checked = uiState.isAgreedServiceTerm,
+                    expanded = expandedType == TermDetailType.SERVICE,
+                    onToggleExpand = {
+                        expandedType = if (expandedType == TermDetailType.SERVICE) null else TermDetailType.SERVICE
+                    },
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                AnimatedVisibility(
+                    visible = expandedType == TermDetailType.SERVICE,
+                    modifier = if (expandedType == TermDetailType.SERVICE) Modifier.weight(1f, fill = false) else Modifier,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
                     TermDetailScreen(
-                        type = detailType!!,
-                        checked = when (detailType) {
-                            TermDetailType.SERVICE -> uiState.isAgreedServiceTerm
-                            TermDetailType.PRIVACY -> uiState.isAgreedPrivacyTerm
-                            TermDetailType.MARKETING -> uiState.isAgreedMarketingTerm
-                            else -> false
-                        },
-                        onBack = { detailType = null },
-                        onToggle = when (detailType) {
-                            TermDetailType.SERVICE -> onToggleService
-                            TermDetailType.PRIVACY -> onTogglePrivacy
-                            TermDetailType.MARKETING -> onToggleMarketing
-                            else -> ({})
-                        },
-                        onAgree = {
-                            when (detailType) {
-                                TermDetailType.SERVICE -> onAgreeService()
-                                TermDetailType.PRIVACY -> onAgreePrivacy()
-                                TermDetailType.MARKETING -> onAgreeMarketing()
-                                null -> Unit
-                            }
-                            detailType = null
-                        },
-                    )
-                } else {
-                    BasicText(
-                        text = "시작에 앞서,\n약관에 동의를 해주세요!",
-                        style = BugleTypography.sTitleM.copy(color = BugleColor.white),
-                    )
-
-                    Spacer(Modifier.height(20.dp))
-
-                    AllAgreementRow(
-                        checked = uiState.isAllTermsAgreed,
-                        onToggle = onToggleAll,
-                    )
-
-                    Spacer(Modifier.height(20.dp))
-
-                    AgreementTrailingRow(
-                        text = "서비스 이용 약관 동의 (필수)",
+                        type = TermDetailType.SERVICE,
                         checked = uiState.isAgreedServiceTerm,
-                        onOpenDetail = { detailType = TermDetailType.SERVICE },
-                        onToggle = onToggleService,
-                    )
-
-                    Spacer(Modifier.height(20.dp))
-
-                    AgreementTrailingRow(
-                        text = "개인정보 수집·이용 동의 (필수)",
-                        checked = uiState.isAgreedPrivacyTerm,
-                        onOpenDetail = { detailType = TermDetailType.PRIVACY },
-                        onToggle = onTogglePrivacy,
-                    )
-
-                    Spacer(Modifier.height(20.dp))
-
-                    AgreementTrailingRow(
-                        text = "마케팅 정보 수신 동의 (선택)",
-                        checked = uiState.isAgreedMarketingTerm,
-                        onOpenDetail = { detailType = TermDetailType.MARKETING },
-                        onToggle = onToggleMarketing,
-                    )
-
-                    Spacer(Modifier.weight(1f))
-
-                    if (uiState.signUpError != null) {
-                        BasicText(
-                            text = uiState.signUpError,
-                            style = BugleTypography.textM.copy(color = BugleTheme.colors.error),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 8.dp),
-                        )
-                    }
-
-                    BugleButton(
-                        text = if (uiState.isLoading) "처리 중..." else "완료",
-                        onClick = onNext,
-                        enabled = !uiState.isLoading && uiState.isRequiredTermsAgreed,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 24.dp),
+                        onBack = {},
+                        onToggle = { onToggleService(); expandedType = null },
+                        onAgree = onAgreeService,
+                        layoutMode = TermDetailLayoutMode.Inline,
                     )
                 }
+
+                Spacer(Modifier.height(20.dp))
+
+                AgreementTrailingRow(
+                    text = "개인정보 수집·이용 동의 (필수)",
+                    checked = uiState.isAgreedPrivacyTerm,
+                    expanded = expandedType == TermDetailType.PRIVACY,
+                    onToggleExpand = {
+                        expandedType = if (expandedType == TermDetailType.PRIVACY) null else TermDetailType.PRIVACY
+                    },
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                AnimatedVisibility(
+                    visible = expandedType == TermDetailType.PRIVACY,
+                    modifier = if (expandedType == TermDetailType.PRIVACY) Modifier.weight(1f, fill = false) else Modifier,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    TermDetailScreen(
+                        type = TermDetailType.PRIVACY,
+                        checked = uiState.isAgreedPrivacyTerm,
+                        onBack = {},
+                        onToggle = { onTogglePrivacy(); expandedType = null },
+                        onAgree = onAgreePrivacy,
+                        layoutMode = TermDetailLayoutMode.Inline,
+                    )
+                }
+
+                Spacer(Modifier.height(20.dp))
+
+                AgreementTrailingRow(
+                    text = "마케팅 정보 수신 동의 (선택)",
+                    checked = uiState.isAgreedMarketingTerm,
+                    expanded = expandedType == TermDetailType.MARKETING,
+                    onToggleExpand = {
+                        expandedType = if (expandedType == TermDetailType.MARKETING) null else TermDetailType.MARKETING
+                    },
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                AnimatedVisibility(
+                    visible = expandedType == TermDetailType.MARKETING,
+                    modifier = if (expandedType == TermDetailType.MARKETING) Modifier.weight(1f, fill = false) else Modifier,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    TermDetailScreen(
+                        type = TermDetailType.MARKETING,
+                        checked = uiState.isAgreedMarketingTerm,
+                        onBack = {},
+                        onToggle = { onToggleMarketing(); expandedType = null },
+                        onAgree = onAgreeMarketing,
+                        layoutMode = TermDetailLayoutMode.Inline,
+                    )
+                }
+
+                Spacer(Modifier.height(20.dp))
+
+                if (uiState.signUpError != null) {
+                    BasicText(
+                        text = uiState.signUpError,
+                        style = BugleTypography.textM.copy(color = BugleTheme.colors.error),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                    )
+                }
+
+                BugleButton(
+                    text = if (uiState.isLoading) "처리 중..." else "완료",
+                    onClick = onNext,
+                    enabled = !uiState.isLoading && uiState.isRequiredTermsAgreed,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = if (expandedType == null) 0.dp else 24.dp),
+                )
             }
         }
     }
@@ -599,11 +638,9 @@ private fun AllAgreementRow(
 private fun AgreementTrailingRow(
     text: String,
     checked: Boolean,
-    onOpenDetail: () -> Unit,
-    onToggle: () -> Unit,
+    expanded: Boolean,
+    onToggleExpand: () -> Unit,
 ) {
-    val checkedColor = Color(0xFFFF4FB6)
-
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -611,20 +648,32 @@ private fun AgreementTrailingRow(
     ) {
         BasicText(
             text = text,
-            style = BugleTypography.textM.copy(color = if (checked) checkedColor else BugleColor.gray500),
+            style = BugleTypography.textM.copy(color = BugleColor.gray300),
             modifier = Modifier
                 .weight(1f)
-                .clickable(onClick = onOpenDetail),
+                .clickable(onClick = onToggleExpand),
         )
 
-        Icon(
-            painter = painterResource(BugleIcon.Check),
-            contentDescription = null,
-            tint = if (checked) checkedColor else BugleColor.gray600,
-            modifier = Modifier
-                .size(20.dp)
-                .clickable(onClick = onOpenDetail),
-        )
+        if (checked) {
+            Icon(
+                painter = painterResource(BugleIcon.Agree),
+                contentDescription = null,
+                tint = Color.Unspecified,
+                modifier = Modifier
+                    .size(14.dp)
+                    .clickable(onClick = onToggleExpand),
+            )
+        } else {
+            Icon(
+                painter = painterResource(BugleIcon.Arrow),
+                contentDescription = null,
+                tint = if (expanded) BugleColor.gray400 else BugleColor.gray500,
+                modifier = Modifier
+                    .size(14.dp)
+                    .rotate(if (expanded) 180f else 270f)
+                    .clickable(onClick = onToggleExpand),
+            )
+        }
 
         Spacer(Modifier.width(12.dp))
     }
@@ -636,6 +685,11 @@ private enum class TermDetailType {
     MARKETING,
 }
 
+private enum class TermDetailLayoutMode {
+    FullScreen,
+    Inline,
+}
+
 @Composable
 private fun TermDetailScreen(
     type: TermDetailType,
@@ -643,6 +697,7 @@ private fun TermDetailScreen(
     onBack: () -> Unit,
     onToggle: () -> Unit,
     onAgree: () -> Unit,
+    layoutMode: TermDetailLayoutMode = TermDetailLayoutMode.FullScreen,
 ) {
     val detail = remember(type) {
         when (type) {
@@ -796,6 +851,40 @@ private fun TermDetailScreen(
 
     val termsBodyScrollState = rememberScrollState()
 
+    if (layoutMode == TermDetailLayoutMode.Inline) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(12.dp),
+        ) {
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 72.dp)
+                        .weight(1f, fill = false),
+            ) {
+                BasicText(
+                    text = detail.body,
+                    style = BugleTypography.textS.copy(color = BugleColor.gray400),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .verticalScroll(termsBodyScrollState),
+                )
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            ConsentRow(
+                checked = checked,
+                onToggle = onToggle,
+            )
+        }
+        return
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Icon(
             painter = painterResource(BugleIcon.Arrow),
@@ -868,7 +957,7 @@ private fun ConsentRow(
     ) {
         BasicText(
             text = "약관에 동의하십니까?",
-            style = BugleTypography.textM.copy(color = BugleColor.white),
+            style = BugleTypography.textM.copy(color = if (checked) BugleColor.primary500 else BugleColor.gray400),
         )
 
         Spacer(Modifier.width(12.dp))
