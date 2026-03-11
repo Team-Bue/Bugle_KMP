@@ -43,6 +43,4 @@ include(":feature:onboarding")
 include(":feature:email-login")
 
 include(":feature:sign-up")
-
 include(":feature:reset-password")
-project(":feature:reset-password").projectDir = file("feature/find-password")

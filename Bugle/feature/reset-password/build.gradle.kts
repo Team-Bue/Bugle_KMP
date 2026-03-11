@@ -49,6 +49,10 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
         }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
+        }
     }
 }
 
