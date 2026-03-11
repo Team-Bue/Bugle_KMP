@@ -1,5 +1,6 @@
 package team.bue.bugle.core.data.repository
 
+import co.touchlab.kermit.Logger
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import team.bue.bugle.core.data.datasource.AuthRemoteDataSource
@@ -15,6 +16,7 @@ class AuthRepositoryImpl(
     private val authRemoteDataSource: AuthRemoteDataSource,
     private val tokenLocalDataSource: TokenLocalDataSource,
 ) : AuthRepository {
+    private val logger = Logger.withTag("AuthRepositoryImpl")
     override suspend fun login(request: LoginRequest): Result<TokenPair> =
         runCatching {
             authRemoteDataSource.login(request).also { tokenPair ->
@@ -60,7 +62,9 @@ class AuthRepositoryImpl(
                 code = code,
                 state = state,
             ).also { tokenPair ->
+                logger.i { "[DEBUG] Kakao OAuth token received - accessToken=${tokenPair.accessToken}, refreshToken=${tokenPair.refreshToken}" }
                 tokenLocalDataSource.save(tokenPair)
+                logger.i { "[DEBUG] Kakao OAuth token saved to local storage" }
             }
         }.fold(
             onSuccess = { Result.success(it) },

@@ -33,8 +33,9 @@ class OnboardingViewModel(
 
             startKakaoOAuthUseCase()
                 .onSuccess { loginUrl ->
-                    logger.i { "Start Kakao OAuth succeeded. loginUrl=${loginUrl.toSafeLogValue()}" }
-                    val expectedState = loginUrl.parseQueryParams()["state"]
+                    val normalizedLoginUrl = loginUrl.normalizedKakaoLoginStartUrl()
+                    logger.i { "Start Kakao OAuth succeeded. loginUrl=${normalizedLoginUrl.toSafeLogValue()}" }
+                    val expectedState = normalizedLoginUrl.parseQueryParams()["state"]
                     if (expectedState.isNullOrBlank()) {
                         logger.i { "Start Kakao OAuth URL has no state. callback state will be validated by backend." }
                     }
@@ -46,7 +47,7 @@ class OnboardingViewModel(
                         )
                     }
                     logger.i { "Opening Kakao OAuth URL." }
-                    sendEffect(OnboardingSideEffect.OpenKakaoLogin(loginUrl))
+                    sendEffect(OnboardingSideEffect.OpenKakaoLogin(normalizedLoginUrl))
                 }
                 .onFailure { throwable ->
                     logger.i { "Start Kakao OAuth failed: ${throwable::class.simpleName}" }
@@ -299,4 +300,26 @@ private fun String.toSafeLogValue(): String {
         ""
     }
     return "$scheme://$host$path"
+}
+
+private fun String.normalizedKakaoLoginStartUrl(): String {
+    val trimmed = trim()
+    val query = trimmed.substringAfter('?', missingDelimiterValue = "")
+    val fragment = trimmed.substringAfter('#', missingDelimiterValue = "")
+    val withoutQueryOrFragment = trimmed
+        .substringBefore('?')
+        .substringBefore('#')
+        .trimEnd('/')
+
+    return buildString {
+        append(withoutQueryOrFragment)
+        if (query.isNotEmpty()) {
+            append('?')
+            append(query)
+        }
+        if (fragment.isNotEmpty()) {
+            append('#')
+            append(fragment)
+        }
+    }
 }

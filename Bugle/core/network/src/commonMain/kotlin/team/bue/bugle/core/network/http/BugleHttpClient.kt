@@ -29,7 +29,7 @@ fun createBugleHttpClient(config: BugleNetworkConfig): HttpClient =
             )
         }
         install(Logging) {
-            level = LogLevel.INFO
+            level = LogLevel.BODY
             logger =
                 object : KtorLogger {
                     override fun log(message: String) {

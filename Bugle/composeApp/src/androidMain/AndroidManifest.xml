@@ -43,7 +43,7 @@
                 <data
                         android:scheme="https"
                         android:host="bugle.team"
-                        android:path="/auth/oauth2" />
+                        android:pathPrefix="/auth/oauth2" />
             </intent-filter>
 
         </activity>

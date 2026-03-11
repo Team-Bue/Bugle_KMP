@@ -21,6 +21,10 @@ class AuthApiService(
     private val client: HttpClient,
     private val networkConfig: BugleNetworkConfig,
 ) {
+    private companion object {
+        const val KAKAO_OAUTH_START_URL = "https://bugle.team/oauth2/authorization/kakao"
+    }
+
     suspend fun login(request: LoginRequestDto): TokenPairResponseDto =
         client.post("/auth/login") {
             header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
@@ -58,7 +62,7 @@ class AuthApiService(
     }
 
     suspend fun startKakaoOAuth(): String {
-        return "${networkConfig.baseUrl}/auth/oauth2/authorization/kakao"
+        return KAKAO_OAUTH_START_URL
     }
 
     suspend fun completeKakaoOAuth(
