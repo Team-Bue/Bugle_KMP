@@ -1,5 +1,12 @@
 package team.bue.bugle.ui
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +19,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation3.runtime.entryProvider
@@ -45,10 +53,41 @@ fun BugleApp(
     ) {
         Scaffold(
             modifier = Modifier.systemBarsPadding(),
+            containerColor = Color.Black,
         ) {
             NavDisplay(
                 backStack = backStack,
                 onBack = { backStack.removeLastOrNull() },
+                transitionSpec = {
+                    (slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth / 6 },
+                        animationSpec = tween(durationMillis = 260),
+                    ) + fadeIn(animationSpec = tween(durationMillis = 220))) togetherWith
+                        (slideOutHorizontally(
+                            targetOffsetX = { fullWidth -> -fullWidth / 12 },
+                            animationSpec = tween(durationMillis = 220),
+                        ) + fadeOut(animationSpec = tween(durationMillis = 180)))
+                },
+                popTransitionSpec = {
+                    (slideInHorizontally(
+                        initialOffsetX = { fullWidth -> -fullWidth / 6 },
+                        animationSpec = tween(durationMillis = 240),
+                    ) + fadeIn(animationSpec = tween(durationMillis = 200))) togetherWith
+                        (slideOutHorizontally(
+                            targetOffsetX = { fullWidth -> fullWidth / 10 },
+                            animationSpec = tween(durationMillis = 220),
+                        ) + fadeOut(animationSpec = tween(durationMillis = 170)))
+                },
+                predictivePopTransitionSpec = {
+                    (slideInHorizontally(
+                        initialOffsetX = { fullWidth -> -fullWidth / 6 },
+                        animationSpec = tween(durationMillis = 220),
+                    ) + fadeIn(animationSpec = tween(durationMillis = 180))) togetherWith
+                        (slideOutHorizontally(
+                            targetOffsetX = { fullWidth -> fullWidth / 10 },
+                            animationSpec = tween(durationMillis = 220),
+                        ) + fadeOut(animationSpec = tween(durationMillis = 170)))
+                },
                 entryProvider =
                     entryProvider {
                         entry<Splash> {
@@ -104,7 +143,12 @@ fun BugleApp(
                             )
                         }
                         entry<Home> {
-                            Box(modifier = Modifier.fillMaxSize())
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .fillMaxSize()
+                                        .background(Color.Black),
+                            )
                         }
                     },
             )
