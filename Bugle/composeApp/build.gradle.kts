@@ -5,20 +5,14 @@ import java.util.Properties
 
 
 
-private val defaultBugleBaseUrl = "https://api.bugle.site"
-
 private val bugleBaseUrl: String by lazy {
     val localProperties = Properties()
     val localPropertiesFile = rootProject.file("local.properties")
-
-    if (localPropertiesFile.exists()) {
-        localPropertiesFile.inputStream().use(localProperties::load)
-    }
-
-    localProperties
-        .getProperty("BUGLE_BASE_URL", defaultBugleBaseUrl)
-        .trim()
-        .removeSurrounding("\"")
+    require(localPropertiesFile.exists()) { "local.properties not found. Add BUGLE_BASE_URL to local.properties." }
+    localPropertiesFile.inputStream().use(localProperties::load)
+    requireNotNull(localProperties.getProperty("BUGLE_BASE_URL")) {
+        "BUGLE_BASE_URL is not set in local.properties."
+    }.trim().removeSurrounding("\"")
 }
 
 plugins {
