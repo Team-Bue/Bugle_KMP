@@ -7,11 +7,16 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
@@ -20,12 +25,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBar
 import team.aliens.dms.android.core.designsystem.snackbar.BugleSnackBarVisuals
+import team.bue.bugle.designsystem.foundation.BugleTypography
 import team.bue.bugle.feature.emaillogin.ui.EmailLoginScreen
 import team.bue.bugle.feature.onboarding.ui.OnboardingScreen
 import team.bue.bugle.feature.resetpassword.ui.ResetPasswordScreen
@@ -92,8 +99,13 @@ fun BugleApp(
                     entryProvider {
                         entry<Splash> {
                             SplashScreen(
-                                onSplashCompleted = {
+                                onNavigateToOnboarding = {
+                                    backStack.clear()
                                     backStack.add(Onboarding)
+                                },
+                                onNavigateToHome = {
+                                    backStack.clear()
+                                    backStack.add(Home)
                                 },
                             )
                         }
@@ -143,12 +155,27 @@ fun BugleApp(
                             )
                         }
                         entry<Home> {
-                            Box(
+                            Column(
                                 modifier =
                                     Modifier
                                         .fillMaxSize()
                                         .background(Color.Black),
-                            )
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                BasicText(
+                                    text = "로그인은 완료되었어요",
+                                    style = BugleTypography.titleL.copy(color = Color.White),
+                                )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                BasicText(
+                                    text = "현재 Home 화면은 아직 연결되지 않아 임시 화면을 보여주고 있어요.",
+                                    style = BugleTypography.textM.copy(
+                                        color = Color(0xFFB3B3B3),
+                                        textAlign = TextAlign.Center,
+                                    ),
+                                )
+                            }
                         }
                     },
             )

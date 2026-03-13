@@ -43,6 +43,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             implementation(projects.core.designSystem)
+            implementation(projects.core.domain)
+            implementation(projects.core.model)
             implementation(projects.core.ui)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)

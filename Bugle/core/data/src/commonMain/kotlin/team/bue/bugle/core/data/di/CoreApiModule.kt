@@ -17,8 +17,9 @@ import team.bue.bugle.core.datastore.storage.createJwtTokenStore
 import team.bue.bugle.core.domain.repository.AuthRepository
 import team.bue.bugle.core.domain.repository.MailRepository
 import team.bue.bugle.core.domain.repository.UserRepository
-import team.bue.bugle.core.domain.usecase.auth.LoginUseCase
 import team.bue.bugle.core.domain.usecase.auth.CompleteKakaoOAuthUseCase
+import team.bue.bugle.core.domain.usecase.auth.GetSavedTokenPairUseCase
+import team.bue.bugle.core.domain.usecase.auth.LoginUseCase
 import team.bue.bugle.core.domain.usecase.auth.ResetPasswordUseCase
 import team.bue.bugle.core.domain.usecase.auth.SignUpUseCase
 import team.bue.bugle.core.domain.usecase.auth.StartKakaoOAuthUseCase
@@ -38,13 +39,13 @@ import team.bue.bugle.core.network.service.ReportApiService
 import team.bue.bugle.core.network.service.SearchApiService
 import team.bue.bugle.core.network.service.UserApiService
 
-private const val DEFAULT_BUGLE_BASE_URL = "https://api.bugle.site"
-
 val coreApiModule =
     module {
         single {
             BugleNetworkConfig(
-                baseUrl = getProperty("BUGLE_BASE_URL", DEFAULT_BUGLE_BASE_URL),
+                baseUrl = requireNotNull(getProperty<String>("BUGLE_BASE_URL")) {
+                    "BUGLE_BASE_URL is required. Provide it from local.properties before starting Koin."
+                },
             )
         }
         single { createBugleHttpClient(get()) }
@@ -75,6 +76,7 @@ val coreApiModule =
         factory { ResetPasswordUseCase(get()) }
         factory { StartKakaoOAuthUseCase(get()) }
         factory { CompleteKakaoOAuthUseCase(get()) }
+        factory { GetSavedTokenPairUseCase(get()) }
         factory { SendMailCodeUseCase(get()) }
         factory { VerifyMailCodeUseCase(get()) }
         factory { GetMyProfileUseCase(get()) }

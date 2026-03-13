@@ -25,7 +25,8 @@ import team.bue.bugle.feature.splash.viewmodel.SplashViewModel
 
 @Composable
 fun SplashScreen(
-    onSplashCompleted: () -> Unit
+    onNavigateToOnboarding: () -> Unit,
+    onNavigateToHome: () -> Unit,
 ) {
     val viewModel: SplashViewModel = koinViewModel()
     val scale = remember { Animatable(0.4f) }
@@ -34,7 +35,8 @@ fun SplashScreen(
     LaunchedEffect(Unit) {
         viewModel.sideEffect.collect { effect ->
             when (effect) {
-                SplashSideEffect.NavigateToMain -> onSplashCompleted()
+                SplashSideEffect.NavigateToOnboarding -> onNavigateToOnboarding()
+                SplashSideEffect.NavigateToHome -> onNavigateToHome()
             }
         }
     }
