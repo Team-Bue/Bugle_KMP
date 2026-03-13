@@ -32,7 +32,10 @@ class MailRepositoryImpl(
             logHttpFailure("verifyCode", throwable)
         }
 
-    private suspend fun logHttpFailure(apiName: String, throwable: Throwable) {
+    private suspend fun logHttpFailure(
+        apiName: String,
+        throwable: Throwable,
+    ) {
         when (throwable) {
             is ClientRequestException -> {
                 val body = runCatching { throwable.response.bodyAsText() }.getOrNull().orEmpty()
