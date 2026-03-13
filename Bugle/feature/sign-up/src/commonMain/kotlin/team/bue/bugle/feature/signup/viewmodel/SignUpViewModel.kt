@@ -275,7 +275,7 @@ class SignUpViewModel(
 }
 
 data class SignUpUiState(
-    val step: SignUpStep = SignUpStep.AGREE_TERMS,
+    val step: SignUpStep = SignUpStep.ENTER_EMAIL,
     val email: String = "",
     val verificationCode: String = "",
     val verificationToken: String? = null,
