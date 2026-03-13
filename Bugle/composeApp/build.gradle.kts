@@ -1,19 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import team.bue.bugle.buildsrc.ProjectProperties
 import team.bue.bugle.buildsrc.Versions
-import java.util.Properties
-
-
-
-private val bugleBaseUrl: String by lazy {
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("local.properties")
-    require(localPropertiesFile.exists()) { "local.properties not found. Add BUGLE_BASE_URL to local.properties." }
-    localPropertiesFile.inputStream().use(localProperties::load)
-    requireNotNull(localProperties.getProperty("BUGLE_BASE_URL")) {
-        "BUGLE_BASE_URL is not set in local.properties."
-    }.trim().removeSurrounding("\"")
-}
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -98,7 +85,6 @@ android {
         targetSdk = ProjectProperties.TARGET_SDK
         versionCode = ProjectProperties.VERSION_CODE
         versionName = ProjectProperties.VERSION_NAME
-        buildConfigField("String", "BUGLE_BASE_URL", "\"$bugleBaseUrl\"")
     }
     packaging {
         resources {

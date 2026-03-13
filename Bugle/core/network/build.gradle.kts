@@ -1,6 +1,16 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import team.bue.bugle.buildsrc.ProjectProperties
 import team.bue.bugle.buildsrc.Versions
+import java.util.Properties
+
+fun getLocalProperty(key: String): String {
+    val properties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    require(localPropertiesFile.exists()) { "local.properties not found." }
+    localPropertiesFile.inputStream().use(properties::load)
+    return requireNotNull(properties.getProperty(key)) { "$key not found in local.properties" }
+        .trim().removeSurrounding("\"")
+}
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -65,6 +75,35 @@ android {
     compileSdk = ProjectProperties.COMPILE_SDK
     defaultConfig {
         minSdk = ProjectProperties.MIN_SDK
+    }
+    buildFeatures {
+        buildConfig = true
+    }
+    buildTypes {
+        release {
+            buildConfigField(
+                type = "String",
+                name = "BASE_URL",
+                value = "\"${getLocalProperty("PROD_BASE_URL")}\"",
+            )
+            buildConfigField(
+                type = "String",
+                name = "WEB_VIEW_URL",
+                value = "\"${getLocalProperty("WEB_VIEW_URL")}\"",
+            )
+        }
+        debug {
+            buildConfigField(
+                type = "String",
+                name = "BASE_URL",
+                value = "\"${getLocalProperty("DEV_BASE_URL")}\"",
+            )
+            buildConfigField(
+                type = "String",
+                name = "WEB_VIEW_URL",
+                value = "\"${getLocalProperty("WEB_VIEW_URL")}\"",
+            )
+        }
     }
     compileOptions {
         sourceCompatibility = Versions.java
