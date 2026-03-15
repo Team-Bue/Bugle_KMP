@@ -38,9 +38,13 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.koin.core)
             api(libs.kermit)
 
             implementation(projects.core.model)
+            implementation(projects.core.network)
+            implementation(projects.core.domain)
+            implementation(projects.core.datastore)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

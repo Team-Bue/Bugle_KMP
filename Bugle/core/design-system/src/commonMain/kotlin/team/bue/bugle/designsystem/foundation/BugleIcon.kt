@@ -1,7 +1,9 @@
 package team.bue.bugle.designsystem.foundation
 
 import bugle.core.design_system.generated.resources.Res
+import bugle.core.design_system.generated.resources.ic_agree
 import bugle.core.design_system.generated.resources.ic_app_logo
+import bugle.core.design_system.generated.resources.ic_arrow
 import bugle.core.design_system.generated.resources.ic_cancel
 import bugle.core.design_system.generated.resources.ic_check
 import bugle.core.design_system.generated.resources.ic_check_on
@@ -15,9 +17,12 @@ import bugle.core.design_system.generated.resources.img_kakao
 import bugle.core.design_system.generated.resources.img_kakao_disabled
 import bugle.core.design_system.generated.resources.ic_link
 import bugle.core.design_system.generated.resources.ic_link_off
+import bugle.core.design_system.generated.resources.img_3d_logo
 
 object BugleIcon {
+    val Agree = Res.drawable.ic_agree
     val AppLogo = Res.drawable.ic_app_logo
+    val Arrow = Res.drawable.ic_arrow
     val Cancel = Res.drawable.ic_cancel
     val Check = Res.drawable.ic_check
     val CheckOn = Res.drawable.ic_check_on
@@ -31,4 +36,5 @@ object BugleIcon {
     val KakaoDisabled = Res.drawable.img_kakao_disabled
     val Link = Res.drawable.ic_link
     val LinkOff = Res.drawable.ic_link_off
+    val ThreeDLogo = Res.drawable.img_3d_logo
 }

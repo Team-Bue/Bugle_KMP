@@ -3,6 +3,7 @@ package team.bue.bugle
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import team.bue.bugle.core.network.BuildConfig as NetworkBuildConfig
 import team.bue.bugle.di.appModule
 
 class BugleApplication : Application() {
@@ -10,6 +11,7 @@ class BugleApplication : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@BugleApplication)
+            properties(mapOf("BUGLE_BASE_URL" to NetworkBuildConfig.BASE_URL))
             modules(appModule)
         }
     }

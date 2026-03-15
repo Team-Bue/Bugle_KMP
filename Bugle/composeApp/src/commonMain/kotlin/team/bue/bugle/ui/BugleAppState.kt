@@ -50,10 +50,11 @@ class BugleAppState(
         message: String,
     ) {
         showSnackBar(
-            visuals = BugleSnackBarVisuals(
-                snackBarType = snackBarType,
-                message = message,
-            ),
+            visuals =
+                BugleSnackBarVisuals(
+                    snackBarType = snackBarType,
+                    message = message,
+                ),
         )
     }
 }

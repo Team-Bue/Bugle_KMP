@@ -1,0 +1,6 @@
+package team.bue.bugle.core.network.http
+
+import io.ktor.client.engine.HttpClientEngineFactory
+import io.ktor.client.engine.okhttp.OkHttp
+
+internal actual fun platformHttpClientEngineFactory(): HttpClientEngineFactory<*> = OkHttp

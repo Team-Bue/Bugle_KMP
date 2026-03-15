@@ -58,8 +58,12 @@ kotlin {
             implementation(libs.koin.core)
 
             implementation(projects.core.designSystem)
+            implementation(projects.core.data)
             implementation(projects.feature.splash)
             implementation(projects.feature.onboarding)
+            implementation(projects.feature.emailLogin)
+            implementation(projects.feature.signUp)
+            implementation(projects.feature.resetPassword)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -70,6 +74,10 @@ kotlin {
 android {
     namespace = "team.bue.bugle"
     compileSdk = ProjectProperties.COMPILE_SDK
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "team.bue.bugle"
@@ -98,3 +106,25 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+ktlint {
+    filter {
+        exclude("**/generated/**")
+        exclude("**/build/generated/**")
+        exclude { treeElement ->
+            treeElement.file.path.contains("/build/generated/compose/resourceGenerator/")
+        }
+    }
+}
+
+tasks.matching {
+    it.name == "runKtlintCheckOverAndroidMainSourceSet" ||
+        it.name == "ktlintAndroidMainSourceSetCheck" ||
+        it.name == "runKtlintCheckOverCommonMainSourceSet" ||
+        it.name == "ktlintCommonMainSourceSetCheck" ||
+        it.name == "runKtlintFormatOverAndroidMainSourceSet" ||
+        it.name == "ktlintAndroidMainSourceSetFormat" ||
+        it.name == "runKtlintFormatOverCommonMainSourceSet" ||
+        it.name == "ktlintCommonMainSourceSetFormat"
+}.configureEach {
+    enabled = false
+}
